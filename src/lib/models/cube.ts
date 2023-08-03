@@ -300,6 +300,150 @@ export class Cube {
 
         return this
     }
+
+    x() {
+        // Rotate the faces that are not moving
+        rotateClockwise(this.state[DIRECTIONS.RIGHT])
+        rotateCounterClockwise(this.state[DIRECTIONS.LEFT])
+
+        // Get the relevant faces for this rotation
+        let u = this.state[DIRECTIONS.UP]
+        let b = this.state[DIRECTIONS.BACK]
+        let d = this.state[DIRECTIONS.DOWN]
+        let f = this.state[DIRECTIONS.FRONT]
+    
+        // Rotate the faces
+        this.state[DIRECTIONS.UP] = f
+        this.state[DIRECTIONS.BACK] = u
+        this.state[DIRECTIONS.DOWN] = b
+        this.state[DIRECTIONS.FRONT] = d
+
+        return this
+    }
+
+    xPrime() {
+        // Rotate the faces that are not moving
+        rotateClockwise(this.state[DIRECTIONS.LEFT])
+        rotateCounterClockwise(this.state[DIRECTIONS.RIGHT])
+
+        // Get the relevant faces for this rotation
+        let u = this.state[DIRECTIONS.UP]
+        let b = this.state[DIRECTIONS.BACK]
+        let d = this.state[DIRECTIONS.DOWN]
+        let f = this.state[DIRECTIONS.FRONT]
+    
+        // Rotate the faces
+        this.state[DIRECTIONS.UP] = b
+        this.state[DIRECTIONS.BACK] = d
+        this.state[DIRECTIONS.DOWN] = f
+        this.state[DIRECTIONS.FRONT] = u
+
+        return this
+    }
+
+    y() {
+        // Rotate the faces that are not moving
+        rotateClockwise(this.state[DIRECTIONS.UP])
+        rotateCounterClockwise(this.state[DIRECTIONS.DOWN])
+
+        // Get the relevant faces for this rotation
+        let f = this.state[DIRECTIONS.FRONT]
+        let r = this.state[DIRECTIONS.RIGHT]
+        let b = this.state[DIRECTIONS.BACK]
+        let l = this.state[DIRECTIONS.LEFT]
+    
+        // Rotate the faces
+        this.state[DIRECTIONS.FRONT] = r
+        this.state[DIRECTIONS.RIGHT] = b
+        this.state[DIRECTIONS.BACK] = l
+        this.state[DIRECTIONS.LEFT] = f
+
+        return this
+    }
+
+    yPrime() {
+        // Rotate the faces that are not moving
+        rotateClockwise(this.state[DIRECTIONS.DOWN])
+        rotateCounterClockwise(this.state[DIRECTIONS.UP])
+
+        // Get the relevant faces for this rotation
+        let f = this.state[DIRECTIONS.FRONT]
+        let r = this.state[DIRECTIONS.RIGHT]
+        let b = this.state[DIRECTIONS.BACK]
+        let l = this.state[DIRECTIONS.LEFT]
+    
+        // Rotate the faces
+        this.state[DIRECTIONS.FRONT] = l
+        this.state[DIRECTIONS.RIGHT] = f
+        this.state[DIRECTIONS.BACK] = r
+        this.state[DIRECTIONS.LEFT] = b
+
+        return this
+    }
+
+    z() {
+        // Rotate the faces that are not moving
+        rotateClockwise(this.state[DIRECTIONS.FRONT])
+        rotateCounterClockwise(this.state[DIRECTIONS.BACK])
+
+        // Get the relevant faces for this rotation
+        let u = this.state[DIRECTIONS.UP]
+        let l = this.state[DIRECTIONS.LEFT]
+        let d = this.state[DIRECTIONS.DOWN]
+        let r = this.state[DIRECTIONS.RIGHT]
+    
+        // Rotate the faces
+        this.state[DIRECTIONS.UP] = l
+        this.state[DIRECTIONS.LEFT] = d
+        this.state[DIRECTIONS.DOWN] = r
+        this.state[DIRECTIONS.RIGHT] = u
+
+        return this
+    }
+
+    zPrime() {
+        // Rotate the faces that are not moving
+        rotateClockwise(this.state[DIRECTIONS.BACK])
+        rotateCounterClockwise(this.state[DIRECTIONS.FRONT])
+
+        // Get the relevant faces for this rotation
+        let u = this.state[DIRECTIONS.UP]
+        let l = this.state[DIRECTIONS.LEFT]
+        let d = this.state[DIRECTIONS.DOWN]
+        let r = this.state[DIRECTIONS.RIGHT]
+    
+        // Rotate the faces
+        this.state[DIRECTIONS.UP] = r
+        this.state[DIRECTIONS.LEFT] = u
+        this.state[DIRECTIONS.DOWN] = l
+        this.state[DIRECTIONS.RIGHT] = d
+
+        return this
+    }
+
+    m() {
+
+    }
+
+    mPrime() {
+
+    }
+
+    e() {
+
+    }
+
+    ePrime() {
+
+    }
+
+    s() {
+
+    }
+
+    sPrime() {
+
+    }
 }
 
 // Given a face, rotate it 90 degrees clockwise
