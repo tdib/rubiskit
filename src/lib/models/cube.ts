@@ -11,8 +11,7 @@ export const COLOURS = {
 
 // Define the general structure and type definitions
 type StickerColour = 'W' | 'O' | 'G' | 'R' | 'B' | 'Y' // Letters define the colours of the cube
-type Row = [StickerColour, StickerColour, StickerColour]
-export type Face = [Row, Row, Row]
+export type Face = StickerColour[][]
 type CubeState = [Face, Face, Face, Face, Face, Face]
 const DIMENSION = 3
 const NUM_FACES = 6
@@ -46,7 +45,7 @@ export class Cube {
     state: CubeState
 
     constructor(initial: CubeState = SOLVED_CUBE) {
-        this.state = JSON.parse(JSON.stringify(initial))
+        this.state = structuredClone(initial)
     }
 
     R() {
@@ -134,21 +133,85 @@ export class Cube {
     }
 
     L() {
+        console.log('L')
+
+        // The right face is rotated 90 degrees (clockwise)
+        rotateClockwise(this.state[DIRECTIONS.LEFT])
+
+        // Get last column of rows that will be altered
+        let col_f = this.state[DIRECTIONS.FRONT].map(row => row[0])
+        let col_u = this.state[DIRECTIONS.UP].map(row => row[0])
+        let col_b = this.state[DIRECTIONS.BACK].map(row => row[DIMENSION - 1])
+        let col_d = this.state[DIRECTIONS.DOWN].map(row => row[0])
+
+        // Perform the column swaps
+        this.state[DIRECTIONS.FRONT].forEach((row, i) => row[0] = col_u[i])
+        this.state[DIRECTIONS.UP].forEach((row, i) => row[0] = col_b[DIMENSION - i - 1])
+        this.state[DIRECTIONS.BACK].forEach((row, i) => row[DIMENSION - 1] = col_d[DIMENSION - i - 1])
+        this.state[DIRECTIONS.DOWN].forEach((row, i) => row[0] = col_f[i])
 
         return this
     }
 
     LPrime() {
+        console.log('L\'')
+
+        // The right face is rotated 90 degrees (clockwise)
+        rotateCounterClockwise(this.state[DIRECTIONS.LEFT])
+
+        // Get last column of rows that will be altered
+        let col_f = this.state[DIRECTIONS.FRONT].map(row => row[0])
+        let col_u = this.state[DIRECTIONS.UP].map(row => row[0])
+        let col_b = this.state[DIRECTIONS.BACK].map(row => row[DIMENSION - 1])
+        let col_d = this.state[DIRECTIONS.DOWN].map(row => row[0])
+
+        // Perform the column swaps
+        this.state[DIRECTIONS.FRONT].forEach((row, i) => row[0] = col_d[i])
+        this.state[DIRECTIONS.UP].forEach((row, i) => row[0] = col_f[i])
+        this.state[DIRECTIONS.BACK].forEach((row, i) => row[DIMENSION - 1] = col_u[DIMENSION - i - 1])
+        this.state[DIRECTIONS.DOWN].forEach((row, i) => row[0] = col_b[DIMENSION - i - 1])
 
         return this
     }
 
     F() {
+        console.log('F')
+
+        // The right face is rotated 90 degrees (clockwise)
+        rotateClockwise(this.state[DIRECTIONS.FRONT])
+
+        // Get altered rows/columns
+        let row_u = this.state[DIRECTIONS.UP][DIMENSION - 1]
+        let col_r = this.state[DIRECTIONS.RIGHT].map(row => row[0])
+        let row_d = this.state[DIRECTIONS.DOWN][0]
+        let col_l = this.state[DIRECTIONS.LEFT].map(row => row[DIMENSION - 1])
+
+        // Perform the column swaps
+        this.state[DIRECTIONS.UP][DIMENSION - 1] = col_l.reverse()
+        this.state[DIRECTIONS.RIGHT].forEach((row, i) => row[0] = row_u[i])
+        this.state[DIRECTIONS.DOWN][0] = col_r.reverse()
+        this.state[DIRECTIONS.LEFT].forEach((row, i) => row[DIMENSION - 1] = row_d[i])
 
         return this
     }
 
     FPrime() {
+        console.log('F\'')
+
+        // The right face is rotated 90 degrees (clockwise)
+        rotateCounterClockwise(this.state[DIRECTIONS.FRONT])
+
+        // Get altered rows/columns
+        let row_u = this.state[DIRECTIONS.UP][DIMENSION - 1]
+        let col_r = this.state[DIRECTIONS.RIGHT].map(row => row[0])
+        let row_d = this.state[DIRECTIONS.DOWN][0]
+        let col_l = this.state[DIRECTIONS.LEFT].map(row => row[DIMENSION - 1])
+
+        // Perform the column swaps
+        this.state[DIRECTIONS.UP][DIMENSION - 1] = col_r
+        this.state[DIRECTIONS.RIGHT].forEach((row, i) => row[0] = row_d[DIMENSION - i - 1])
+        this.state[DIRECTIONS.DOWN][0] = col_l
+        this.state[DIRECTIONS.LEFT].forEach((row, i) => row[DIMENSION - 1] = row_u[DIMENSION - i - 1])
 
         return this
     }

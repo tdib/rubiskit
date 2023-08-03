@@ -18,7 +18,26 @@
       } else {
         cube.U()
       }
+    } else if (e.key === 'ArrowLeft') {
+      if (e.shiftKey) {
+        cube.LPrime()
+      } else {
+        cube.L()
+      }
+    } else if (e.key === 'ArrowDown') {
+      if (e.shiftKey) {
+        cube.DPrime()
+      } else {
+        cube.D()
+      }
+    } else if (e.key.toLowerCase() === 'f') {
+      if (e.shiftKey) {
+        cube.FPrime()
+      } else {
+        cube.F()
+      }
     }
+
     cube = cube
     count ++
   }
