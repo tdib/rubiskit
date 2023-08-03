@@ -3,7 +3,6 @@
   import Net from '$lib/components/Net.svelte'
 
   let cube = new Cube()
-  let count = 0
 
   function handleKeyPress(e: KeyboardEvent) {
     if (e.key === 'ArrowRight') {
@@ -36,10 +35,15 @@
       } else {
         cube.F()
       }
+    } else if (e.key.toLowerCase() === 'b') {
+      if (e.shiftKey) {
+        cube.BPrime()
+      } else {
+        cube.B()
+      }
     }
 
     cube = cube
-    count ++
   }
 </script>
 

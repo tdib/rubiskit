@@ -114,7 +114,7 @@ export class Cube {
     UPrime() {
         console.log('U\'')
 
-        // The right face is rotated 90 degrees (clockwise)
+        // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.UP])
 
         // Get last column of rows that will be altered
@@ -156,7 +156,7 @@ export class Cube {
     LPrime() {
         console.log('L\'')
 
-        // The right face is rotated 90 degrees (clockwise)
+        // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.LEFT])
 
         // Get last column of rows that will be altered
@@ -198,7 +198,7 @@ export class Cube {
     FPrime() {
         console.log('F\'')
 
-        // The right face is rotated 90 degrees (clockwise)
+        // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.FRONT])
 
         // Get altered rows/columns
@@ -217,20 +217,86 @@ export class Cube {
     }
 
     B() {
+        console.log('B')
+
+        // The right face is rotated 90 degrees (clockwise)
+        rotateClockwise(this.state[DIRECTIONS.BACK])
+
+        // Get altered rows/columns
+        let row_u = this.state[DIRECTIONS.UP][0]
+        let col_r = this.state[DIRECTIONS.RIGHT].map(row => row[DIMENSION - 1])
+        let row_d = this.state[DIRECTIONS.DOWN][DIMENSION - 1]
+        let col_l = this.state[DIRECTIONS.LEFT].map(row => row[0])
+
+        // Perform the column swaps
+        this.state[DIRECTIONS.UP][0] = col_r
+        this.state[DIRECTIONS.RIGHT].forEach((row, i) => row[DIMENSION - 1] = row_d[DIMENSION - i - 1])
+        this.state[DIRECTIONS.DOWN][DIMENSION - 1] = col_l
+        this.state[DIRECTIONS.LEFT].forEach((row, i) => row[0] = row_u[DIMENSION - i - 1])
 
         return this
     }
 
     BPrime() {
+        console.log('B\'')
+
+        // The right face is rotated 90 degrees (counter-clockwise)
+        rotateCounterClockwise(this.state[DIRECTIONS.BACK])
+
+        // Get altered rows/columns
+        let row_u = this.state[DIRECTIONS.UP][0]
+        let col_r = this.state[DIRECTIONS.RIGHT].map(row => row[DIMENSION - 1])
+        let row_d = this.state[DIRECTIONS.DOWN][DIMENSION - 1]
+        let col_l = this.state[DIRECTIONS.LEFT].map(row => row[0])
+
+        // Perform the column swaps
+        this.state[DIRECTIONS.UP][0] = col_l.reverse()
+        this.state[DIRECTIONS.RIGHT].forEach((row, i) => row[DIMENSION - 1] = row_u[i])
+        this.state[DIRECTIONS.DOWN][DIMENSION - 1] = col_r.reverse()
+        this.state[DIRECTIONS.LEFT].forEach((row, i) => row[0] = row_d[i])
+
         return this
     }
 
     D() {
+        console.log('D')
+
+        // The right face is rotated 90 degrees (clockwise)
+        rotateClockwise(this.state[DIRECTIONS.DOWN])
+
+        // Get last column of rows that will be altered
+        let row_f = this.state[DIRECTIONS.FRONT][DIMENSION - 1]
+        let row_r = this.state[DIRECTIONS.RIGHT][DIMENSION - 1]
+        let row_b = this.state[DIRECTIONS.BACK][DIMENSION - 1]
+        let row_l = this.state[DIRECTIONS.LEFT][DIMENSION - 1]
+
+        // Perform the column swaps
+        this.state[DIRECTIONS.FRONT][DIMENSION - 1] = row_l
+        this.state[DIRECTIONS.RIGHT][DIMENSION - 1] = row_f
+        this.state[DIRECTIONS.BACK][DIMENSION - 1] = row_r
+        this.state[DIRECTIONS.LEFT][DIMENSION - 1] = row_b
 
         return this
     }
 
     DPrime() {
+        console.log('D\'')
+
+        // The right face is rotated 90 degrees (counter-clockwise)
+        rotateCounterClockwise(this.state[DIRECTIONS.DOWN])
+
+        // Get last column of rows that will be altered
+        let row_f = this.state[DIRECTIONS.FRONT][DIMENSION - 1]
+        let row_r = this.state[DIRECTIONS.RIGHT][DIMENSION - 1]
+        let row_b = this.state[DIRECTIONS.BACK][DIMENSION - 1]
+        let row_l = this.state[DIRECTIONS.LEFT][DIMENSION - 1]
+
+        // Perform the column swaps
+        this.state[DIRECTIONS.FRONT][DIMENSION - 1] = row_r
+        this.state[DIRECTIONS.RIGHT][DIMENSION - 1] = row_b
+        this.state[DIRECTIONS.BACK][DIMENSION - 1] = row_l
+        this.state[DIRECTIONS.LEFT][DIMENSION - 1] = row_f
+
 
         return this
     }
