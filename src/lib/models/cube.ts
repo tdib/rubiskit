@@ -421,28 +421,41 @@ export class Cube {
         return this
     }
 
+    // Advanced moves
     m() {
-
+        this.R()
+        this.LPrime()
+        this.xPrime()
     }
 
     mPrime() {
-
+        this.RPrime()
+        this.L()
+        this.x()
     }
 
     e() {
-
+        this.U()
+        this.DPrime()
+        this.yPrime()
     }
 
     ePrime() {
-
+        this.UPrime()
+        this.D()
+        this.y()
     }
 
     s() {
-
+        this.FPrime()
+        this.B()
+        this.z()
     }
 
     sPrime() {
-
+        this.F()
+        this.BPrime()
+        this.zPrime()
     }
 }
 
