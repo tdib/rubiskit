@@ -314,8 +314,8 @@ export class Cube {
     
         // Rotate the faces
         this.state[DIRECTIONS.UP] = f
-        this.state[DIRECTIONS.BACK] = u
-        this.state[DIRECTIONS.DOWN] = b
+        this.state[DIRECTIONS.BACK] = rotateClockwise(rotateClockwise(u))
+        this.state[DIRECTIONS.DOWN] = rotateClockwise(rotateClockwise(b))
         this.state[DIRECTIONS.FRONT] = d
 
         return this
@@ -333,8 +333,8 @@ export class Cube {
         let f = this.state[DIRECTIONS.FRONT]
     
         // Rotate the faces
-        this.state[DIRECTIONS.UP] = b
-        this.state[DIRECTIONS.BACK] = d
+        this.state[DIRECTIONS.UP] = rotateClockwise(rotateClockwise(b))
+        this.state[DIRECTIONS.BACK] = rotateClockwise(rotateClockwise(d))
         this.state[DIRECTIONS.DOWN] = f
         this.state[DIRECTIONS.FRONT] = u
 
@@ -393,10 +393,10 @@ export class Cube {
         let r = this.state[DIRECTIONS.RIGHT]
     
         // Rotate the faces
-        this.state[DIRECTIONS.UP] = l
-        this.state[DIRECTIONS.LEFT] = d
-        this.state[DIRECTIONS.DOWN] = r
-        this.state[DIRECTIONS.RIGHT] = u
+        this.state[DIRECTIONS.UP] = rotateCounterClockwise(l)
+        this.state[DIRECTIONS.LEFT] = rotateCounterClockwise(d)
+        this.state[DIRECTIONS.DOWN] = rotateCounterClockwise(r)
+        this.state[DIRECTIONS.RIGHT] = rotateCounterClockwise(u)
 
         return this
     }
@@ -413,10 +413,10 @@ export class Cube {
         let r = this.state[DIRECTIONS.RIGHT]
     
         // Rotate the faces
-        this.state[DIRECTIONS.UP] = r
-        this.state[DIRECTIONS.LEFT] = u
-        this.state[DIRECTIONS.DOWN] = l
-        this.state[DIRECTIONS.RIGHT] = d
+        this.state[DIRECTIONS.UP] = rotateClockwise(r)
+        this.state[DIRECTIONS.LEFT] = rotateClockwise(u)
+        this.state[DIRECTIONS.DOWN] = rotateClockwise(l)
+        this.state[DIRECTIONS.RIGHT] = rotateClockwise(d)
 
         return this
     }

@@ -29,6 +29,7 @@
 
 <style lang='scss'>
   .net {
+    margin: 10em auto;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);

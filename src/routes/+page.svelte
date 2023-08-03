@@ -86,9 +86,23 @@
   }
 </script>
 
+<div>
+  <h1>Rubiskit</h1>
+  <h2>(pronounced roo-biscuit, emphasis on the biscuit)</h2>
+</div>
 <svelte:window on:keyup={handleKeyPress}/>
 <Net cube={cube} />
 
 <style lang='scss'>
+  h1, h2 {
+    margin: 0;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-block-start: 3em;
+  }
 
 </style>
