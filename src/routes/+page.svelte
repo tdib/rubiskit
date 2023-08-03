@@ -90,7 +90,7 @@
   <h1>Rubiskit</h1>
   <h2>(pronounced roo-biscuit, emphasis on the biscuit)</h2>
 </div>
-<svelte:window on:keyup={handleKeyPress}/>
+<svelte:window on:keydown={handleKeyPress}/>
 <Net cube={cube} />
 
 <style lang='scss'>
