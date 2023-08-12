@@ -3,6 +3,7 @@
   import { ContactShadows, Float, Grid, OrbitControls } from '@threlte/extras'
   import * as THREE from 'three'
   import * as Utils from 'three/src/math/MathUtils'
+  import { DEG2RAD } from 'three/src/math/MathUtils'
   import Cubie from './Cubie.svelte'
 
   const RED = new THREE.Color('#a61b1b')
@@ -12,281 +13,328 @@
   const YELLOW = new THREE.Color('#e8c723')
   const WHITE = new THREE.Color('#eeeeee')
 
-  let cubies = [
-      {
-        position: [1, 1, -1],
-        rotation: [0, Utils.degToRad(-90), 0],
-        colour1: RED,
-        colour2: WHITE,
-        colour3: BLUE,
-      },
+  type Colour = {
+    right?: THREE.Color
+    left?: THREE.Color
+    up?: THREE.Color
+    down?: THREE.Color
+    front?: THREE.Color
+    back?: THREE.Color
+  }
 
-      {
-        position: [0, 1, -1],
-        rotation: [0, 0, 0],
-        colour1: BLUE,
-        colour2: WHITE,
-      },
-
-      {
-        position: [-1, 1, -1],
-        rotation: [0, 0, 0],
-        colour1: BLUE,
-        colour2: WHITE,
-        colour3: ORANGE,
-      },
-
-      {
-        position: [1, 0, -1],
-        rotation: [0, 0, Utils.degToRad(-90)],
-        colour1: BLUE,
-        colour2: RED,
-      },
-
-      {
-        position: [0, 0, -1],
-        rotation: [0, 0, 0],
-        colour1: BLUE,
-      },
-
-      {
-        position: [-1, 0, -1],
-        rotation: [0, 0, Utils.degToRad(90)],
-        colour1: BLUE,
-        colour2: ORANGE,
-      },
+  type Cubie = {
+    position: THREE.Vector3
+    rotation: THREE.Quaternion
+    colour: Colour
+  }
 
 
-      {
-        position: [1, -1, -1],
-        rotation: [Utils.degToRad(-90), Utils.degToRad(-90), 0],
-        colour1: RED,
-        colour2: BLUE,
-        colour3: YELLOW,
-      },
-
-      {
-        position: [0, -1, -1],
-        rotation: [Utils.degToRad(-90), 0, 0],
-        colour1: YELLOW,
-        colour2: BLUE,
-      },
-
-      {
-        position: [-1, -1, -1],
-        rotation: [Utils.degToRad(-90), 0, 0],
-        colour1: YELLOW,
-        colour2: BLUE,
-        colour3: ORANGE,
-      },
-
-
-      {
-        position: [1, -1, 0],
-        rotation: [0, Utils.degToRad(-90), Utils.degToRad(180)],
-        colour1: RED,
-        colour2: YELLOW,
-      },
-
-      {
-        position: [0, -1, 0],
-        rotation: [Utils.degToRad(-90), 0, 0],
-        colour1: YELLOW,
-      },
-
-      {
-        position: [-1, -1, 0],
-        rotation: [Utils.degToRad(-90), 0, Utils.degToRad(90)],
-        colour1: YELLOW,
-        colour2: ORANGE,
-      },
-
-      {
-        position: [1, 0, 0],
-        rotation: [0, Utils.degToRad(-90), 0],
-        colour1: RED,
-      },
-
-      {
-        position: [0, 0, 0],
-        rotation: [0, 0, 0],
-      },
-      {
-        position: [-1, 0, 0],
-        rotation: [0, Utils.degToRad(90), 0],
-        colour1: ORANGE,
-      },
-
-      {
-        position: [-1, 1, 0],
-        rotation: [0, Utils.degToRad(90), 0],
-        colour1: ORANGE,
-        colour2: WHITE,
-      },
-
-      {
-        position: [0, 1, 0],
-        rotation: [Utils.degToRad(90), 0, 0],
-        colour1: WHITE,
-      },
-
-      {
-        position: [1, 1, 0],
-        rotation: [0, Utils.degToRad(-90), 0],
-        colour1: RED,
-        colour2: WHITE,
-      },
-
-      {
-        position: [1, 1, 1],
-        rotation: [Utils.degToRad(90), Utils.degToRad(-90), 0],
-        colour1: RED,
-        colour2: GREEN,
-        colour3: WHITE,
-      },
-
-      {
-        position: [0, 1, 1],
-        rotation: [Utils.degToRad(90), 0, 0],
-        colour1: WHITE,
-        colour2: GREEN,
-      },
-
-      {
-        position: [-1, 1, 1],
-        rotation: [Utils.degToRad(90), 0, 0],
-        colour1: WHITE,
-        colour2: GREEN,
-        colour3: ORANGE,
-      },
-
-      {
-        position: [1, 0, 1],
-        rotation: [Utils.degToRad(90), Utils.degToRad(-90), 0],
-        colour1: RED,
-        colour2: GREEN,
-      },
-
-      {
-        position: [0, 0, 1],
-        rotation: [Utils.degToRad(180), 0, 0],
-        colour1: GREEN,
-      },
-
-      {
-        position: [-1, 0, 1],
-        rotation: [Utils.degToRad(90), Utils.degToRad(90), 0],
-        colour1: ORANGE,
-        colour2: GREEN,
-      },
-
-      {
-        position: [1, -1, 1],
-        rotation: [Utils.degToRad(180), Utils.degToRad(-90), 0],
-        colour1: RED,
-        colour2: YELLOW,
-        colour3: GREEN,
-      },
-
-      {
-        position: [0, -1, 1],
-        rotation: [Utils.degToRad(180), 0, 0],
-        colour1: GREEN,
-        colour2: YELLOW,
-      },
-
-      {
-        position: [-1, -1, 1],
-        rotation: [Utils.degToRad(180), 0, 0],
-        colour1: GREEN,
-        colour2: YELLOW,
-        colour3: ORANGE,
-      },
+  let cubies: Cubie[] = [
+    {
+      position: new THREE.Vector3(1, 1, -1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        up: WHITE,
+        back: BLUE,
+        right: RED,
+      }
+    },
+    {
+      position: new THREE.Vector3(0, 1, -1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        up: WHITE,
+        back: BLUE,
+      }
+    },
+    {
+      position: new THREE.Vector3(-1, 1, -1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        up: WHITE,
+        back: BLUE,
+        left: ORANGE,
+      }
+    },
+    {
+      position: new THREE.Vector3(1, 0, -1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        back: BLUE,
+        right: RED,
+      }
+    },
+    {
+      position: new THREE.Vector3(0, 0, -1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        back: BLUE,
+      }
+    },
+    {
+      position: new THREE.Vector3(-1, 0, -1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        back: BLUE,
+        left: ORANGE,
+      }
+    },
+    {
+      position: new THREE.Vector3(1, -1, -1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        back: BLUE,
+        right: RED,
+        down: YELLOW,
+      }
+    },
+    {
+      position: new THREE.Vector3(0, -1, -1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        back: BLUE,
+        down: YELLOW,
+      }
+    },
+    {
+      position: new THREE.Vector3(-1, -1, -1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        back: BLUE,
+        down: YELLOW,
+        left: ORANGE,
+      }
+    },
+    {
+      position: new THREE.Vector3(1, -1, 0),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        right: RED,
+        down: YELLOW,
+      }
+    },
+    {
+      position: new THREE.Vector3(0, -1, 0),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        down: YELLOW,
+      }
+    },
+    {
+      position: new THREE.Vector3(-1, -1, 0),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        down: YELLOW,
+        left: ORANGE,
+      }
+    },
+    {
+      position: new THREE.Vector3(1, 0, 0),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        right: RED,
+      }
+    },
+    {
+      position: new THREE.Vector3(0, 0, 0),
+      rotation: new THREE.Quaternion(),
+      colour: {}
+    },
+    {
+      position: new THREE.Vector3(-1, 0, 0),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        left: ORANGE,
+      }
+    },
+    {
+      position: new THREE.Vector3(-1, 1, 0),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        up: WHITE,
+        left: ORANGE,
+      }
+    },
+    {
+      position: new THREE.Vector3(0, 1, 0),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        up: WHITE,
+      }
+    },
+    {
+      position: new THREE.Vector3(1, 1, 0),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        up: WHITE,
+        right: RED,
+      }
+    },
+    {
+      position: new THREE.Vector3(1, 1, 1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        front: GREEN,
+        up: WHITE,
+        right: RED,
+      }
+    },
+    {
+      position: new THREE.Vector3(0, 1, 1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        front: GREEN,
+        up: WHITE,
+      }
+    },
+    {
+      position: new THREE.Vector3(-1, 1, 1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        front: GREEN,
+        up: WHITE,
+        left: ORANGE,
+      }
+    },
+    {
+      position: new THREE.Vector3(1, 0, 1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        front: GREEN,
+        right: RED
+      }
+    },
+    {
+      position: new THREE.Vector3(0, 0, 1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        front: GREEN,
+      }
+    },
+    {
+      position: new THREE.Vector3(-1, 0, 1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        front: GREEN,
+        left: ORANGE,
+      }
+    },
+    {
+      position: new THREE.Vector3(1, -1, 1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        front: GREEN,
+        right: RED,
+        down: YELLOW,
+      }
+    },
+    {
+      position: new THREE.Vector3(0, -1, 1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        front: GREEN,
+        down: YELLOW,
+      }
+    },
+    {
+      position: new THREE.Vector3(-1, -1, 1),
+      rotation: new THREE.Quaternion(),
+      colour: {
+        front: GREEN,
+        left: ORANGE,
+        down: YELLOW,
+      }
+    },
   ]
 
-  type Position = [Number, Number, Number]
-
-
-
-
-  function add([x1, y1, z1]: number[], [x2, y2, z2]: number[]): number[] {
-    return [x1 + x2, y1 + y2, z1 + z2];
+  function rotateAroundAxis(vector: THREE.Vector3, axis: THREE.Vector3, theta: number): THREE.Vector3 {
+    const rotatedVector = vector.clone().applyAxisAngle(axis, theta);
+    return rotatedVector;
   }
 
-  function subtract([x1, y1, z1]: number[], [x2, y2, z2]: number[]): number[] {
-      return [x1 - x2, y1 - y2, z1 - z2];
-  }
-  function rotateAroundAxis([x, y, z]: number[], axis: number[], angleDegrees: number): number[] {
-    const theta = (Math.PI / 180) * angleDegrees;  // Convert to radians
-    let cosT = Math.cos(theta);
-    let sinT = Math.sin(theta);
+  //   function rotateAroundAxis(position: THREE.Vector3, rotationAxis: THREE.Vector3, angleIncrement: number): { newPosition: THREE.Vector3, rotationQuaternion: THREE.Quaternion } {
+  //     const theta = THREE.MathUtils.degToRad(angleIncrement); 
 
-    if (axis[0] === 1) {  // X-axis
-        return [
-            x,
-            cosT * y - sinT * z,
-            sinT * y + cosT * z
-        ];
-    } else if (axis[1] === 1) {  // Y-axis
-        return [
-            cosT * x + sinT * z,
-            y,
-            -sinT * x + cosT * z
-        ];
-    } else if (axis[2] === 1) {  // Z-axis
-        return [
-            cosT * x - sinT * y,
-            sinT * x + cosT * y,
-            z
-        ];
-    }
+  //     const rotationQuaternion = new THREE.Quaternion().setFromAxisAngle(rotationAxis, theta);
+      
+  //     const newPosition = position.clone();
+  //     newPosition.sub(rotationCenter).applyQuaternion(rotationQuaternion).add(rotationCenter);
 
-    throw new Error("Invalid rotation axis");
+  //     return { newPosition, rotationQuaternion }
+  // }
+  function computeFinalRotation(rotationAxis: THREE.Vector3, totalAngle: number): THREE.Quaternion {
+      // return new THREE.Quaternion().setFromAxisAngle(rotationAxis, THREE.MathUtils.degToRad(totalAngle));
+      return new THREE.Quaternion().setFromAxisAngle(rotationAxis, totalAngle);
   }
 
-  let angleIncrement = 5;  // Amount to rotate each frame
-  let currentAngle = 0;    // Track current rotation
-  const rotationAxis = [0, 1, 0];  // x-axis for face x=1
-  const rotationCenter = [0, 1, 0];  // Center of x=1 face for a 3x3 cube
+
+
+
+  const rotationAxis = new THREE.Vector3(0, 1, 0)  // x-axis for face x=1
+  const rotationCenter = new THREE.Vector3(0, 1, 0)  // Center of x=1 face for a 3x3 cube
+
+  let durationInSeconds = 0.25
+  const totalRotation = Math.PI / 2
+  let startTime: number | null = null
 
   import { onMount } from 'svelte'
 
   let r = cubies
-    .map((cubie, idx) => ({ cubie, idx })) // Create an array of objects with cubie and index
-    .filter(({ cubie }) => cubie.position[1] === 1); // Filter based on your condition
+    .map((cubie, idx) => ({ cubie, originalIndex: idx })) // Create an array of objects with cubie and index
+    .filter(({ cubie }) => cubie.position.y === 1); // Filter based on your condition
+
+  // Store initial rotation quaternions for all cubies
+  const initialRotations = r.map(({ cubie }) => cubie.rotation.clone())
+  const initialPositions = r.map(({ cubie }) => cubie.position.clone())
+
+  // Compute the final rotations for all cubies
+  const finalRotations = r.map(({ cubie }) => {
+    const finalQuaternion = computeFinalRotation(rotationAxis, Math.PI / 2); // 90 degree rotation
+    return cubie.rotation.clone().multiply(finalQuaternion);
+  });
 
   onMount(() => {
-    function animateFrame() {
-      console.log('----------------');
-      currentAngle += angleIncrement;
+    function animateFrame(timestamp: number) {
+      if (startTime === null) {
+        startTime = timestamp
+      }
+      const elapsedTime = (timestamp - startTime) / 1000
 
-      r.map(({cubie, idx}) => {
-        let position = subtract(cubie.position, rotationCenter);  // Translate to origin
-        position = rotateAroundAxis(position, rotationAxis, angleIncrement);
-        position = add(position, rotationCenter);  // Translate back
+      const currentRotation = Utils.lerp(0, totalRotation, elapsedTime / durationInSeconds)
 
-        // console.log(cubie.position, idx);
+      r.forEach(({cubie, originalIndex}, idx) => {
+        // let relativePosition = cubie.position.clone().sub(rotationCenter);
+        let relativePosition = initialPositions[idx].clone().sub(rotationCenter);
+        relativePosition = rotateAroundAxis(relativePosition, rotationAxis, currentRotation);
+        cubies[originalIndex].position = relativePosition.add(rotationCenter)
 
-        // console.log(cubie.position);
-        cubies[idx].position = position;
-        // console.log('---');
-
-        // cubies[idx].rotation[1] += Utils.degToRad(angleIncrement)
+        const newQuaternion = new THREE.Quaternion()
+        newQuaternion.slerpQuaternions(initialRotations[idx], finalRotations[idx], elapsedTime / durationInSeconds)
+        cubies[originalIndex].rotation = newQuaternion
       })
 
-      if (currentAngle < 90) {
+
+      if (elapsedTime < durationInSeconds) {
         requestAnimationFrame(animateFrame);
+      } else {
+        r.forEach(({cubie, originalIndex}, idx) => {
+          // let relativePosition = cubie.position.clone().sub(rotationCenter);
+          let relativePosition = initialPositions[idx].clone().sub(rotationCenter);
+          relativePosition = rotateAroundAxis(relativePosition, rotationAxis, totalRotation);
+          cubies[originalIndex].position = relativePosition.add(rotationCenter)
+
+          const newQuaternion = new THREE.Quaternion()
+          newQuaternion.slerpQuaternions(initialRotations[idx], finalRotations[idx], elapsedTime / durationInSeconds)
+          cubies[originalIndex].rotation = finalRotations[idx]
+        })
       }
     }
 
-
-    animateFrame();
+    requestAnimationFrame(animateFrame)
   })
 
 
-  // r.forEach((cubie) => {
-  //   cubie.rotation[0] = Utils.degToRad(90)
-  // })
+
 
 </script>
 
@@ -305,14 +353,18 @@
 
     <T.AmbientLight intensity={0.8} />
 
+        <!-- rotation={[cubie.rotation.x, cubie.rotation.y, cubie.rotation.z]} -->
     <!-- <Float> -->
     {#each cubies as cubie}
       <Cubie
-        position={cubie.position}
-        rotation={cubie.rotation}
-        colour1={cubie.colour1}
-        colour2={cubie.colour2}
-        colour3={cubie.colour3}
+        position={[cubie.position.x, cubie.position.y, cubie.position.z]}
+        rotation={new THREE.Euler().setFromQuaternion(cubie.rotation)}
+        colour1={cubie.colour.right}
+        colour2={cubie.colour.left}
+        colour3={cubie.colour.up}
+        colour4={cubie.colour.down}
+        colour5={cubie.colour.front}
+        colour6={cubie.colour.back}
       />
     {/each}
     <!-- </Float> -->
