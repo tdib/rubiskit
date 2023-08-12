@@ -6,12 +6,9 @@
   export let position: [number, number, number] = [0, 0, 0]
   export let rotation: [number, number, number] = [0, 0, 0]
 
-  type cubieType = 'core' | 'edge' | 'corner'
-  export let cubieType: cubieType
-
   export let colour1: THREE.Color = new THREE.Color('#000000')
-  export let colour2: THREE.Color | undefined
-  export let colour3: THREE.Color | undefined
+  export let colour2: THREE.Color | null = null
+  export let colour3: THREE.Color | null = null
 
   let defaultColour = new THREE.Color('#111111')
   let scale = 0.8
@@ -44,3 +41,6 @@
     else parent.material = [self]
   }} color={colour1 ?? defaultColour} />
 </T.Mesh>
+
+
+
