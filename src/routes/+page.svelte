@@ -1,6 +1,7 @@
 <script lang='ts'>
   import { Cube } from '../lib/models/cube'
   import Net from '$lib/components/Net.svelte'
+  import Cube3D from '$lib/components/Cube3D.svelte'
 
   let cube = new Cube()
 
@@ -86,12 +87,14 @@
   }
 </script>
 
-<div>
+<!-- <div>
   <h1>Rubiskit</h1>
   <h2>(pronounced roo-biscuit, emphasis on the biscuit)</h2>
 </div>
 <svelte:window on:keydown={handleKeyPress}/>
-<Net cube={cube} />
+<Net cube={cube} /> -->
+
+<Cube3D></Cube3D>
 
 <style lang='scss'>
   h1, h2 {
