@@ -1,10 +1,8 @@
 <script lang='ts'>
-  import { Canvas, T } from '@threlte/core'
-  import { ContactShadows, Float, Grid, OrbitControls } from '@threlte/extras'
+  import { T } from '@threlte/core'
   import * as THREE from 'three'
 
   export let position: [number, number, number] = [0, 0, 0]
-  // export let rotation: [number, number, number] = [0, 0, 0]
   export let rotation: THREE.Euler
 
   export let colour1: THREE.Color | null = null // Right
