@@ -3,7 +3,29 @@
   import { OrbitControls } from '@threlte/extras'
   import { Euler } from 'three'
   import Cubie from './Cubie.svelte'
-  import { cube3dState } from '$lib/stores/cube3dState'
+  import { cube3dState, moveState } from '$lib/stores/cube3dState'
+  import { turn } from '$lib/util/rotation'
+
+  let defaultTurnSpeed = 0.15
+  let turnSpeed = defaultTurnSpeed
+  $: if (!$moveState.isMoving && $moveState.moveQueue.length > 0) {
+    $moveState.isMoving = true
+
+    if ($moveState.moveQueue.length > 1) {
+      turnSpeed = defaultTurnSpeed/(1 + $moveState.moveQueue.length*defaultTurnSpeed)
+    } else {
+      turnSpeed = defaultTurnSpeed
+    }
+
+    turn(
+      $moveState.moveQueue[0].move,
+      $moveState.moveQueue[0].isClockwise,
+      turnSpeed
+    )
+    $moveState.moveQueue.shift()
+  }
+
+  
 </script>
 
 <div>

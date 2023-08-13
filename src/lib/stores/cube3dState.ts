@@ -2,6 +2,14 @@ import { writable } from 'svelte/store'
 import { Vector3, Quaternion } from 'three'
 import { WHITE, GREEN, BLUE, RED, ORANGE, YELLOW, type Cubie } from '$lib/models/cube3d'
 
+export const moveState = writable<{
+  moveQueue: { move: Vector3, isClockwise: boolean }[],
+  isMoving: boolean
+}>({
+  moveQueue: [],
+  isMoving: false,
+})
+
 export const cube3dState = writable<Cubie[]>([
   {
     position: new Vector3(1, 1, -1),

@@ -3,61 +3,68 @@
   import Net from '$lib/components/2d/Net.svelte'
   import Cube3D from '$lib/components/3d/Cube3D.svelte'
   import { Vector3 } from 'three'
-  import { cube3dState } from '$lib/stores/cube3dState'
+  import { moveState } from '$lib/stores/cube3dState'
   import { turn } from '$lib/util/rotation'
 
   let is3d = true
   let cube = new Cube()
+
+  function queueMove(move: Vector3, isClockwise: boolean = true) {
+    moveState.update((state) => {
+      state.moveQueue.push({ move: move, isClockwise: isClockwise })
+      return { ...state }
+    })
+  }
 
   function handleKeyPress(e: KeyboardEvent) {
     // Main permutations
     if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'r') {
       if (e.shiftKey) {
         cube.RPrime()
-        turn(new Vector3(1, 0, 0), false)
+        queueMove(new Vector3(1, 0, 0), false)
       } else {
         cube.R()
-        turn(new Vector3(1, 0, 0))
+        queueMove(new Vector3(1, 0, 0))
       }
     } else if (e.key === 'ArrowUp' || e.key.toLowerCase() === 'u') {
       if (e.shiftKey) {
         cube.UPrime()
-        turn(new Vector3(0, 1, 0), false)
+        queueMove(new Vector3(0, 1, 0), false)
       } else {
         cube.U()
-        turn(new Vector3(0, 1, 0))
+        queueMove(new Vector3(0, 1, 0))
       }
     } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'l') {
       if (e.shiftKey) {
         cube.LPrime()
-        turn(new Vector3(-1, 0, 0), false)
+        queueMove(new Vector3(-1, 0, 0), false)
       } else {
         cube.L()
-        turn(new Vector3(-1, 0, 0))
+        queueMove(new Vector3(-1, 0, 0))
       }
     } else if (e.key === 'ArrowDown' || e.key.toLowerCase() === 'd') {
       if (e.shiftKey) {
         cube.DPrime()
-        turn(new Vector3(0, -1, 0), false)
+        queueMove(new Vector3(0, -1, 0), false)
       } else {
         cube.D()
-        turn(new Vector3(0, -1, 0))
+        queueMove(new Vector3(0, -1, 0))
       }
     } else if (e.key.toLowerCase() === 'f') {
       if (e.shiftKey) {
         cube.FPrime()
-        turn(new Vector3(0, 0, 1), false)
+        queueMove(new Vector3(0, 0, 1), false)
       } else {
         cube.F()
-        turn(new Vector3(0, 0, 1))
+        queueMove(new Vector3(0, 0, 1))
       }
     } else if (e.key.toLowerCase() === 'b') {
       if (e.shiftKey) {
         cube.BPrime()
-        turn(new Vector3(0, 0, -1), false)
+        queueMove(new Vector3(0, 0, -1), false)
       } else {
         cube.B()
-        turn(new Vector3(0, 0, -1))
+        queueMove(new Vector3(0, 0, -1))
       }
     // Advanced moves
     } else if (e.key.toLowerCase() === 'm') {

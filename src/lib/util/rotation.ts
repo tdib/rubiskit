@@ -1,10 +1,7 @@
 import type { Cubie } from '$lib/models/cube3d'
 import * as THREE from 'three'
 import * as Utils from 'three/src/math/MathUtils'
-import { cube3dState } from '$lib/stores/cube3dState'
-
-// Define how long a turn should take
-let TURN_DURATION_SECONDS = .2
+import { cube3dState, moveState } from '$lib/stores/cube3dState'
 
 // Function for rounding a vector to the nearest integer - used to account for precision error
 function roundVectorComponents(vector: THREE.Vector3): THREE.Vector3 {
@@ -23,7 +20,7 @@ function isCubieOnTargetFace(cubie: Cubie, rotationAxis: THREE.Vector3): boolean
     return false
 }
 
-export function turn(rotationAxis: THREE.Vector3, isClockwise: boolean = true) {
+export function turn(rotationAxis: THREE.Vector3, isClockwise: boolean = true, turnDuration: number = 0.15) {
   let startTime: number | null = null
   const ROTATION_DIRECTION_AMOUNT = isClockwise ? -Math.PI/2 : Math.PI/2
   const rotationCenter = rotationAxis
@@ -56,7 +53,7 @@ export function turn(rotationAxis: THREE.Vector3, isClockwise: boolean = true) {
       startTime = timestamp
     }
     const elapsedTime = (timestamp - startTime) / 1000
-    const currentRotation = Utils.lerp(0, ROTATION_DIRECTION_AMOUNT, elapsedTime / TURN_DURATION_SECONDS)
+    const currentRotation = Utils.lerp(0, ROTATION_DIRECTION_AMOUNT, elapsedTime / turnDuration)
 
     targetFace.forEach(({ originalIdx }, idx) => {
       // Translate the position of each cubie around the center of the face
@@ -69,7 +66,7 @@ export function turn(rotationAxis: THREE.Vector3, isClockwise: boolean = true) {
 
       // Rotate the cubie around the center of the face
       const newQuaternion = new THREE.Quaternion()
-      newQuaternion.slerpQuaternions(initialRotations[idx], finalRotations[idx], elapsedTime / TURN_DURATION_SECONDS)
+      newQuaternion.slerpQuaternions(initialRotations[idx], finalRotations[idx], elapsedTime / turnDuration)
       // cubies[originalIdx].rotation = newQuaternion
       cube3dState.update((state) => state.map((cubie, stateIdx) => 
         stateIdx === originalIdx ? { ...cubie, rotation: newQuaternion } : cubie
@@ -77,7 +74,7 @@ export function turn(rotationAxis: THREE.Vector3, isClockwise: boolean = true) {
     })
 
 
-    if (elapsedTime < TURN_DURATION_SECONDS) {
+    if (elapsedTime < turnDuration) {
       requestAnimationFrame(animateFrame);
     } else {
       // Snap the cubies to their final positions
@@ -96,6 +93,12 @@ export function turn(rotationAxis: THREE.Vector3, isClockwise: boolean = true) {
         cube3dState.update((state) => state.map((cubie, stateIdx) => 
           stateIdx === originalIdx ? { ...cubie, rotation: finalRotations[idx] } : cubie
         ))
+      })
+      moveState.update((state) => {
+        return {
+          ...state,
+          isMoving: false
+        }
       })
     }
   }
