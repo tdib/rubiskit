@@ -4,7 +4,7 @@
   import Cube3D from '$lib/components/3d/Cube3D.svelte'
   import type { Vector3 } from 'three'
   import { moveState } from '$lib/stores/cube3dState'
-  import { turn } from '$lib/util/rotation'
+  import { turn } from '$lib/util/permutation'
   import { DIRECTIONS } from '$lib/models/cube3d'
 
   let is3d = true

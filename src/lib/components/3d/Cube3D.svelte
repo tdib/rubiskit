@@ -4,7 +4,7 @@
   import { Euler } from 'three'
   import Cubie from './Cubie.svelte'
   import { cube3dState, moveState } from '$lib/stores/cube3dState'
-  import { turn } from '$lib/util/rotation'
+  import { turn } from '$lib/util/permutation'
 
 
   let defaultTurnSpeed = 0.15
