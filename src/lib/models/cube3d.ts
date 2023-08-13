@@ -16,16 +16,18 @@ type Colour = {
   back?: THREE.Color
 }
 
-type Cubie = {
+export type CubieType = {
   position: THREE.Vector3
   rotation: THREE.Quaternion
+  globalRotation: THREE.Quaternion
   colour: Colour
 }
 
-export let cubies: Cubie[] = [
+export let cubies: CubieType[] = [
   {
     position: new THREE.Vector3(1, 1, -1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       up: WHITE,
       back: BLUE,
@@ -35,6 +37,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(0, 1, -1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       up: WHITE,
       back: BLUE,
@@ -43,6 +46,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(-1, 1, -1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       up: WHITE,
       back: BLUE,
@@ -52,6 +56,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(1, 0, -1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       back: BLUE,
       right: RED,
@@ -60,6 +65,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(0, 0, -1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       back: BLUE,
     }
@@ -67,6 +73,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(-1, 0, -1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       back: BLUE,
       left: ORANGE,
@@ -75,6 +82,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(1, -1, -1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       back: BLUE,
       right: RED,
@@ -84,6 +92,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(0, -1, -1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       back: BLUE,
       down: YELLOW,
@@ -92,6 +101,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(-1, -1, -1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       back: BLUE,
       down: YELLOW,
@@ -101,6 +111,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(1, -1, 0),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       right: RED,
       down: YELLOW,
@@ -109,6 +120,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(0, -1, 0),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       down: YELLOW,
     }
@@ -116,6 +128,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(-1, -1, 0),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       down: YELLOW,
       left: ORANGE,
@@ -124,6 +137,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(1, 0, 0),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       right: RED,
     }
@@ -131,11 +145,13 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(0, 0, 0),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {}
   },
   {
     position: new THREE.Vector3(-1, 0, 0),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       left: ORANGE,
     }
@@ -143,6 +159,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(-1, 1, 0),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       up: WHITE,
       left: ORANGE,
@@ -151,6 +168,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(0, 1, 0),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       up: WHITE,
     }
@@ -158,6 +176,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(1, 1, 0),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       up: WHITE,
       right: RED,
@@ -166,6 +185,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(1, 1, 1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       front: GREEN,
       up: WHITE,
@@ -175,6 +195,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(0, 1, 1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       front: GREEN,
       up: WHITE,
@@ -183,6 +204,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(-1, 1, 1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       front: GREEN,
       up: WHITE,
@@ -192,6 +214,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(1, 0, 1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       front: GREEN,
       right: RED
@@ -200,6 +223,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(0, 0, 1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       front: GREEN,
     }
@@ -207,6 +231,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(-1, 0, 1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       front: GREEN,
       left: ORANGE,
@@ -215,6 +240,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(1, -1, 1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       front: GREEN,
       right: RED,
@@ -224,6 +250,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(0, -1, 1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       front: GREEN,
       down: YELLOW,
@@ -232,6 +259,7 @@ export let cubies: Cubie[] = [
   {
     position: new THREE.Vector3(-1, -1, 1),
     rotation: new THREE.Quaternion(),
+    globalRotation: new THREE.Quaternion(),
     colour: {
       front: GREEN,
       left: ORANGE,

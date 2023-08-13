@@ -12,11 +12,13 @@
   export let colour5: THREE.Color | null = null // Front
   export let colour6: THREE.Color | null = null // Back
 
+  let mesh
+
   let defaultColour = new THREE.Color('#111111')
   let scale = 0.8
 </script>
 
-<T.Mesh position={position} rotation={rotation.toArray()} scale={scale}>
+<T.Mesh position={position} rotation={rotation.toArray()} scale={scale} bind:this={mesh}>
   <T.BoxGeometry />
 
   <T.MeshStandardMaterial attach={(parent, self) => {
