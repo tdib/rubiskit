@@ -1,29 +1,9 @@
 <script lang='ts'>
-  import { onMount } from 'svelte'
   import { Canvas, T } from '@threlte/core'
   import { OrbitControls } from '@threlte/extras'
-  import * as THREE from 'three'
-  import * as Utils from 'three/src/math/MathUtils'
+  import { Euler } from 'three'
   import Cubie from './Cubie.svelte'
-  import type { CubieType } from '$lib/models/cube3d'
-  import { cubies } from '$lib/models/cube3d'
-
-
-  export let state: CubieType[] = cubies
-
-  // const rotationAxis = new THREE.Vector3(0, 1, 0)
-  const rotationAxis = new THREE.Vector3(1, 0, 0)
-
-  // const rotationCenter = new THREE.Vector3(0, 1, 0)
-  // const rotationCenter = new THREE.Vector3(1, 0, 0)
-
-  // const rotationCenter = rotationAxis
-
-
-  // let targetFace = cubies
-  //   .map((cubie, idx) => ({ cubie, originalIndex: idx })) // Create an array of objects with cubie and index
-  //   .filter(({ cubie }) => cubie.position.y === 1); // Filter based on your condition
-
+  import { cube3dState } from '$lib/stores/cube3dState'
 </script>
 
 <div>
@@ -42,10 +22,10 @@
     <T.AmbientLight intensity={0.8} />
 
     <!-- <Float> -->
-    {#each state as cubie, index}
+    {#each $cube3dState as cubie}
       <Cubie
         position={[cubie.position.x, cubie.position.y, cubie.position.z]}
-        rotation={new THREE.Euler().setFromQuaternion(cubie.rotation)}
+        rotation={new Euler().setFromQuaternion(cubie.rotation)}
         colour1={cubie.colour.right}
         colour2={cubie.colour.left}
         colour3={cubie.colour.up}

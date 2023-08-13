@@ -1,0 +1,248 @@
+import { writable } from 'svelte/store'
+import { Vector3, Quaternion } from 'three'
+import { WHITE, GREEN, BLUE, RED, ORANGE, YELLOW, type Cubie } from '$lib/models/cube3d'
+
+export const cube3dState = writable<Cubie[]>([
+  {
+    position: new Vector3(1, 1, -1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      up: WHITE,
+      back: BLUE,
+      right: RED,
+    }
+  },
+  {
+    position: new Vector3(0, 1, -1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      up: WHITE,
+      back: BLUE,
+    }
+  },
+  {
+    position: new Vector3(-1, 1, -1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      up: WHITE,
+      back: BLUE,
+      left: ORANGE,
+    }
+  },
+  {
+    position: new Vector3(1, 0, -1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      back: BLUE,
+      right: RED,
+    }
+  },
+  {
+    position: new Vector3(0, 0, -1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      back: BLUE,
+    }
+  },
+  {
+    position: new Vector3(-1, 0, -1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      back: BLUE,
+      left: ORANGE,
+    }
+  },
+  {
+    position: new Vector3(1, -1, -1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      back: BLUE,
+      right: RED,
+      down: YELLOW,
+    }
+  },
+  {
+    position: new Vector3(0, -1, -1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      back: BLUE,
+      down: YELLOW,
+    }
+  },
+  {
+    position: new Vector3(-1, -1, -1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      back: BLUE,
+      down: YELLOW,
+      left: ORANGE,
+    }
+  },
+  {
+    position: new Vector3(1, -1, 0),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      right: RED,
+      down: YELLOW,
+    }
+  },
+  {
+    position: new Vector3(0, -1, 0),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      down: YELLOW,
+    }
+  },
+  {
+    position: new Vector3(-1, -1, 0),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      down: YELLOW,
+      left: ORANGE,
+    }
+  },
+  {
+    position: new Vector3(1, 0, 0),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      right: RED,
+    }
+  },
+  {
+    position: new Vector3(0, 0, 0),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {}
+  },
+  {
+    position: new Vector3(-1, 0, 0),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      left: ORANGE,
+    }
+  },
+  {
+    position: new Vector3(-1, 1, 0),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      up: WHITE,
+      left: ORANGE,
+    }
+  },
+  {
+    position: new Vector3(0, 1, 0),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      up: WHITE,
+    }
+  },
+  {
+    position: new Vector3(1, 1, 0),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      up: WHITE,
+      right: RED,
+    }
+  },
+  {
+    position: new Vector3(1, 1, 1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      front: GREEN,
+      up: WHITE,
+      right: RED,
+    }
+  },
+  {
+    position: new Vector3(0, 1, 1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      front: GREEN,
+      up: WHITE,
+    }
+  },
+  {
+    position: new Vector3(-1, 1, 1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      front: GREEN,
+      up: WHITE,
+      left: ORANGE,
+    }
+  },
+  {
+    position: new Vector3(1, 0, 1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      front: GREEN,
+      right: RED
+    }
+  },
+  {
+    position: new Vector3(0, 0, 1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      front: GREEN,
+    }
+  },
+  {
+    position: new Vector3(-1, 0, 1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      front: GREEN,
+      left: ORANGE,
+    }
+  },
+  {
+    position: new Vector3(1, -1, 1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      front: GREEN,
+      right: RED,
+      down: YELLOW,
+    }
+  },
+  {
+    position: new Vector3(0, -1, 1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      front: GREEN,
+      down: YELLOW,
+    }
+  },
+  {
+    position: new Vector3(-1, -1, 1),
+    rotation: new Quaternion(),
+    globalRotation: new Quaternion(),
+    colour: {
+      front: GREEN,
+      left: ORANGE,
+      down: YELLOW,
+    }
+  },
+])
