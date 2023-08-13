@@ -10,7 +10,7 @@ export const moveState = writable<{
   isMoving: false,
 })
 
-export const cube3dState = writable<Cubie[]>([
+export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, 1, -1),
     rotation: new Quaternion(),
@@ -253,4 +253,6 @@ export const cube3dState = writable<Cubie[]>([
       down: YELLOW,
     }
   },
-])
+] as const
+
+export const cube3dState = writable<Cubie[]>([...SOLVED_CUBE_STATE])

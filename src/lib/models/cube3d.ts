@@ -1,4 +1,5 @@
 import { Vector3, Quaternion, Color } from 'three'
+import { cube3dState, moveState } from '$lib/stores/cube3dState'
 
 export const RED = new Color('#a61b1b')
 export const BLUE = new Color('#1c52c7')
@@ -31,3 +32,97 @@ export const DIRECTIONS = {
   BACK: new Vector3(0, 0, -1),
   DOWN: new Vector3(0, -1, 0),
 } as const
+
+function queueMove(move: Vector3, isClockwise: boolean = true) {
+  moveState.update((state) => {
+    state.moveQueue.push({ move: move, isClockwise: isClockwise })
+    return { ...state }
+  })
+}
+
+export class Cube3D {
+  R() {
+    queueMove(DIRECTIONS.RIGHT)
+  }
+
+  RPrime() {
+    queueMove(DIRECTIONS.RIGHT, false)
+  }
+  
+  U() {
+    queueMove(DIRECTIONS.UP)
+  }
+  
+  UPrime() {
+    queueMove(DIRECTIONS.UP, false)
+  }
+  
+  L() {
+    queueMove(DIRECTIONS.LEFT)
+  }
+  
+  LPrime() {
+    queueMove(DIRECTIONS.LEFT, false)
+  }
+  
+  F() {
+    queueMove(DIRECTIONS.FRONT)
+  }
+  
+  FPrime() {
+    queueMove(DIRECTIONS.FRONT, false)
+  }
+  
+  B() {
+    queueMove(DIRECTIONS.BACK)
+  }
+  
+  BPrime() {
+    queueMove(DIRECTIONS.BACK, false)
+  }
+  
+  D() {
+    queueMove(DIRECTIONS.DOWN)
+  }
+  
+  DPrime() {
+    queueMove(DIRECTIONS.DOWN, false)
+  }
+  
+  x() {
+  }
+  
+  xPrime() {
+  }
+  
+  y() {
+  }
+  
+  yPrime() {
+  }
+  
+  z() {
+  }
+  
+  zPrime() {
+  }
+  
+  // Advanced moves
+  m() {
+  }
+  
+  mPrime() {
+  }
+  
+  e() {
+  }
+  
+  ePrime() {
+  }
+  
+  s() {
+  }
+  
+  sPrime() {
+  }
+}
