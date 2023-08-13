@@ -22,3 +22,12 @@ export type Cubie = {
   globalRotation: Quaternion
   colour: CubieColour
 }
+
+export const DIRECTIONS = {
+  UP: new Vector3(0, 1, 0),
+  LEFT: new Vector3(-1, 0, 0),
+  FRONT: new Vector3(0, 0, 1),
+  RIGHT: new Vector3(1, 0, 0),
+  BACK: new Vector3(0, 0, -1),
+  DOWN: new Vector3(0, -1, 0),
+} as const

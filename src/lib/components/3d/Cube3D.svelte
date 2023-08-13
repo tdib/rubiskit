@@ -6,6 +6,7 @@
   import { cube3dState, moveState } from '$lib/stores/cube3dState'
   import { turn } from '$lib/util/rotation'
 
+
   let defaultTurnSpeed = 0.15
   let turnSpeed = defaultTurnSpeed
   $: if (!$moveState.isMoving && $moveState.moveQueue.length > 0) {

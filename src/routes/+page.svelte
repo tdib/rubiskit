@@ -2,9 +2,10 @@
   import { Cube } from '../lib/models/cube'
   import Net from '$lib/components/2d/Net.svelte'
   import Cube3D from '$lib/components/3d/Cube3D.svelte'
-  import { Vector3 } from 'three'
+  import type { Vector3 } from 'three'
   import { moveState } from '$lib/stores/cube3dState'
   import { turn } from '$lib/util/rotation'
+  import { DIRECTIONS } from '$lib/models/cube3d'
 
   let is3d = true
   let cube = new Cube()
@@ -21,50 +22,50 @@
     if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'r') {
       if (e.shiftKey) {
         cube.RPrime()
-        queueMove(new Vector3(1, 0, 0), false)
+        queueMove(DIRECTIONS.RIGHT, false)
       } else {
         cube.R()
-        queueMove(new Vector3(1, 0, 0))
+        queueMove(DIRECTIONS.RIGHT)
       }
     } else if (e.key === 'ArrowUp' || e.key.toLowerCase() === 'u') {
       if (e.shiftKey) {
         cube.UPrime()
-        queueMove(new Vector3(0, 1, 0), false)
+        queueMove(DIRECTIONS.UP, false)
       } else {
         cube.U()
-        queueMove(new Vector3(0, 1, 0))
+        queueMove(DIRECTIONS.UP)
       }
     } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'l') {
       if (e.shiftKey) {
         cube.LPrime()
-        queueMove(new Vector3(-1, 0, 0), false)
+        queueMove(DIRECTIONS.LEFT, false)
       } else {
         cube.L()
-        queueMove(new Vector3(-1, 0, 0))
+        queueMove(DIRECTIONS.LEFT)
       }
     } else if (e.key === 'ArrowDown' || e.key.toLowerCase() === 'd') {
       if (e.shiftKey) {
         cube.DPrime()
-        queueMove(new Vector3(0, -1, 0), false)
+        queueMove(DIRECTIONS.DOWN, false)
       } else {
         cube.D()
-        queueMove(new Vector3(0, -1, 0))
+        queueMove(DIRECTIONS.DOWN)
       }
     } else if (e.key.toLowerCase() === 'f') {
       if (e.shiftKey) {
         cube.FPrime()
-        queueMove(new Vector3(0, 0, 1), false)
+        queueMove(DIRECTIONS.FRONT, false)
       } else {
         cube.F()
-        queueMove(new Vector3(0, 0, 1))
+        queueMove(DIRECTIONS.FRONT)
       }
     } else if (e.key.toLowerCase() === 'b') {
       if (e.shiftKey) {
         cube.BPrime()
-        queueMove(new Vector3(0, 0, -1), false)
+        queueMove(DIRECTIONS.BACK, false)
       } else {
         cube.B()
-        queueMove(new Vector3(0, 0, -1))
+        queueMove(DIRECTIONS.BACK)
       }
     // Advanced moves
     } else if (e.key.toLowerCase() === 'm') {
