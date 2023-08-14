@@ -30,37 +30,7 @@
       r.isClockwise,
       rotationSpeed
     )
-  import { cube3dState, moveState, cameraState, rotationState } from '$lib/stores/cube3dState'
-  import { turn } from '$lib/util/permutation'
-  import { rotate } from '$lib/util/rotation'
-
-  let cameraPosition = $cameraState.position
-  $: cameraPosition = $cameraState.position
-
-  let upVector = $cameraState.up
-  $: upVector = $cameraState.up
-
-  const defaultRotationSpeed = 0.2
-  let rotationSpeed = defaultRotationSpeed
-  $: if (!$rotationState.isRotating && $rotationState.rotationQueue.length > 0) {
-    $rotationState.isRotating = true
-
-    if ($rotationState.rotationQueue.length > 1) {
-      rotationSpeed = defaultRotationSpeed/(1 + $rotationState.rotationQueue.length*defaultRotationSpeed)
-    } else {
-      rotationSpeed = defaultRotationSpeed
-    }
-
-    let r = $rotationState.rotationQueue[0]
-    rotate(
-      r.axis,
-      r.isClockwise,
-      rotationSpeed
-    )
     // $rotationState.rotationQueue[0].rotation.start()
-    $rotationState.rotationQueue.shift()
-  }
-
     $rotationState.rotationQueue.shift()
   }
 
