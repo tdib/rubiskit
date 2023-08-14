@@ -3,14 +3,27 @@
   import { OrbitControls } from '@threlte/extras'
   import { Euler } from 'three'
   import Cubie from './Cubie.svelte'
-  import { cube3dState, moveState, cameraState } from '$lib/stores/cube3dState'
+  import { cube3dState, moveState, cameraState, rotationState } from '$lib/stores/cube3dState'
   import { turn } from '$lib/util/permutation'
+  import { rotate } from '$lib/util/rotation'
 
   let cameraPosition = $cameraState.position
   $: cameraPosition = $cameraState.position
 
   let upVector = $cameraState.up
   $: upVector = $cameraState.up
+
+  $: if (!$rotationState.isRotating && $rotationState.rotationQueue.length > 0) {
+    $rotationState.isRotating = true
+    let r = $rotationState.rotationQueue[0]
+    rotate(
+      r.axis,
+      r.isClockwise
+    )
+    // $rotationState.rotationQueue[0].rotation.start()
+    $rotationState.rotationQueue.shift()
+  }
+
 
   let defaultTurnSpeed = 0.15
   let turnSpeed = defaultTurnSpeed

@@ -20,6 +20,14 @@ export const moveState = writable<{
   isMoving: false,
 })
 
+export const rotationState = writable<{
+  rotationQueue: { axis: Vector3, isClockwise: boolean }[],
+  isRotating: boolean
+}>({
+  rotationQueue: [],
+  isRotating: false
+})
+
 export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, 1, -1),

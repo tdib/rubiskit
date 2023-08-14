@@ -1,6 +1,6 @@
 import { Vector3, Quaternion, Color } from 'three'
-import { cube3dState, moveState } from '$lib/stores/cube3dState'
-import { animateCameraRotation } from '$lib/util/rotation'
+import { cube3dState, moveState, rotationState } from '$lib/stores/cube3dState'
+import { rotate } from '$lib/util/rotation'
 
 export const RED = new Color('#a61b1b')
 export const BLUE = new Color('#1c52c7')
@@ -33,19 +33,20 @@ export const DIRECTIONS = {
   DOWN: new Vector3(0, -1, 0),
 }
 
-const AXIS = {
-  x: new Vector3(1, 0, 0),
-  y: new Vector3(0, 1, 0),
-  z: new Vector3(0, 0, 1),
-}
-
-export function negateAxis(axis: Vector3) {
-  return new Vector3(-axis.x, -axis.y, -axis.z)
-}
+// export function negateAxis(axis: Vector3) {
+//   return new Vector3(-axis.x, -axis.y, -axis.z)
+// }
 
 function queueMove(move: Vector3, isClockwise: boolean = true) {
   moveState.update((state) => {
-    state.moveQueue.push({ move: move, isClockwise: isClockwise })
+    state.moveQueue.push({ move, isClockwise })
+    return { ...state }
+  })
+}
+
+function queueRotation(axis: Vector3, isClockwise: boolean = true) {
+  rotationState.update((state) => {
+    state.rotationQueue.push({ axis, isClockwise })
     return { ...state }
   })
 }
@@ -100,7 +101,7 @@ export class Cube3D {
   }
   
   x() {
-    animateCameraRotation(DIRECTIONS.RIGHT)
+    queueRotation(DIRECTIONS.RIGHT)
 
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
@@ -116,7 +117,7 @@ export class Cube3D {
   }
   
   xPrime() {
-    animateCameraRotation(negateAxis(DIRECTIONS.RIGHT))
+    queueRotation(DIRECTIONS.RIGHT, false)
 
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
@@ -132,7 +133,7 @@ export class Cube3D {
   }
   
   y() {
-    animateCameraRotation(DIRECTIONS.UP)
+    queueRotation(DIRECTIONS.UP)
 
     // Get the relevant faces for this rotation
     let f = DIRECTIONS.FRONT
@@ -148,7 +149,7 @@ export class Cube3D {
   }
   
   yPrime() {
-    animateCameraRotation(negateAxis(DIRECTIONS.UP))
+    queueRotation(DIRECTIONS.UP, false)
     
     // Get the relevant faces for this rotation
     let f = DIRECTIONS.FRONT
@@ -164,7 +165,7 @@ export class Cube3D {
   }
   
   z() {
-    animateCameraRotation(DIRECTIONS.FRONT)
+    queueRotation(DIRECTIONS.FRONT)
 
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
@@ -180,7 +181,7 @@ export class Cube3D {
   }
   
   zPrime() {
-    animateCameraRotation(negateAxis(DIRECTIONS.FRONT))
+    queueRotation(DIRECTIONS.FRONT, false)
 
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP

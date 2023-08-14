@@ -1,59 +1,49 @@
 import { Vector3, Quaternion, Matrix4 } from 'three'
-import { cameraState } from '$lib/stores/cube3dState'
-import { DIRECTIONS, negateAxis } from '$lib/models/cube3d'
+import { cameraState, rotationState } from '$lib/stores/cube3dState'
+import { DIRECTIONS } from '$lib/models/cube3d'
 import { roundVectorComponents } from './permutation'
 
-function rotatePosition(position: Vector3, axis: Vector3, angle: number = Math.PI/2, pivot: Vector3 = new Vector3(0, 0, 0)): Vector3 {
-  const translatedPosition = position.clone().sub(pivot)
+function rotatePosition(position: Vector3, axis: Vector3): Vector3 {
+  let angle = Math.PI/2
+  let origin = new Vector3(0, 0, 0)
+
+  const translatedPosition = position.clone().sub(origin)
   
   const rotationMatrix = new Matrix4()
   rotationMatrix.makeRotationAxis(axis.normalize(), angle)
   const rotatedPosition = translatedPosition.applyMatrix4(rotationMatrix)
-  rotatedPosition.add(pivot)
+  rotatedPosition.add(origin)
   
   return rotatedPosition
 }
 
-function determineUpVector(rotationAxis: Vector3): Vector3 {
-  if (rotationAxis.equals(DIRECTIONS.UP)) {
-    return DIRECTIONS.UP
-  } else if (rotationAxis.equals(negateAxis(DIRECTIONS.UP))) {
-    return DIRECTIONS.UP
-  } else if (rotationAxis.equals(DIRECTIONS.RIGHT)) {
-    return DIRECTIONS.FRONT
-  } else if (rotationAxis.equals(negateAxis(DIRECTIONS.RIGHT))) {
-    return negateAxis(DIRECTIONS.FRONT)
-  } else if (rotationAxis.equals(DIRECTIONS.FRONT)) {
-    return negateAxis(DIRECTIONS.RIGHT)
-  } else if (rotationAxis.equals(negateAxis(DIRECTIONS.FRONT))) {
-    return DIRECTIONS.RIGHT
-  }
-  throw new Error("Unsupported rotation axis");
+function negateAxis(axis: Vector3) {
+  return new Vector3(-axis.x, -axis.y, -axis.z)
 }
 
-export function animateCameraRotation(
+export function rotate(
   axis: Vector3, 
-  pivot: Vector3 = new Vector3(0, 0, 0),
+  isClockwise: boolean = true,
   duration: number = 500
 ) {
-  console.log('here')
+  axis = isClockwise ? axis : negateAxis(axis)
+
   let cameraPosition: Vector3 = new Vector3(6, 6, 6)
   let upVector: Vector3 = new Vector3(0, 1, 0)
-  console.log('up1', upVector);
   cameraState.subscribe((state) => {
     cameraPosition = state.position
     upVector = state.up
   })
-  console.log('up2', upVector);
   
   const startPosition = cameraPosition
-  const endPosition = rotatePosition(startPosition, axis);
-  
-  const startQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(startPosition, pivot, axis));
-  const endQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(endPosition, pivot, axis));
+  const endPosition = rotatePosition(startPosition, axis)
+
+  const origin = new Vector3(0, 0, 0)
+  const startQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(startPosition, origin, axis));
+  const endQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(endPosition, origin, axis));
   
   const startUpQuaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), upVector);
-  const endUpQuaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), determineUpVector(axis));
+  const endUpQuaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), DIRECTIONS.UP);
   
   let animationProgress = 0;
   const startTime = Date.now();
@@ -89,9 +79,15 @@ export function animateCameraRotation(
     } else {
       cameraState.update((state) => {
         return {
-          ...state,
           position: endPosition,
           up: roundVectorComponents(upVector)
+        }
+      })
+
+      rotationState.update((state) => {
+        return {
+          ...state,
+          isRotating: false
         }
       })
     }
