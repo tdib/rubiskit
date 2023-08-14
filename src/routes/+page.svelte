@@ -2,13 +2,11 @@
   import { Cube } from '../lib/models/cube'
   import Net from '$lib/components/2d/Net.svelte'
   import Cube3D from '$lib/components/3d/Cube3D.svelte'
-  import type { Vector3 } from 'three'
-  import { moveState } from '$lib/stores/cube3dState'
-  import { turn } from '$lib/util/rotation'
-  import { DIRECTIONS } from '$lib/models/cube3d'
+  import { Cube3D as Cube3DClass } from '$lib/models/cube3d'
 
   let is3d = true
   let cube = new Cube()
+  let cube3d = new Cube3DClass()
 
   function queueMove(move: Vector3, isClockwise: boolean = true) {
     moveState.update((state) => {
@@ -22,88 +20,101 @@
     if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'r') {
       if (e.shiftKey) {
         cube.RPrime()
-        queueMove(DIRECTIONS.RIGHT, false)
+        cube3d.RPrime()
       } else {
         cube.R()
-        queueMove(DIRECTIONS.RIGHT)
+        cube3d.R()
       }
     } else if (e.key === 'ArrowUp' || e.key.toLowerCase() === 'u') {
       if (e.shiftKey) {
         cube.UPrime()
-        queueMove(DIRECTIONS.UP, false)
-      } else {
+        cube3d.UPrime()
+      }
+      else {
         cube.U()
-        queueMove(DIRECTIONS.UP)
+        cube3d.U()
       }
     } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'l') {
       if (e.shiftKey) {
         cube.LPrime()
-        queueMove(DIRECTIONS.LEFT, false)
+        cube3d.LPrime()
       } else {
         cube.L()
-        queueMove(DIRECTIONS.LEFT)
+        cube3d.L()
       }
     } else if (e.key === 'ArrowDown' || e.key.toLowerCase() === 'd') {
       if (e.shiftKey) {
         cube.DPrime()
-        queueMove(DIRECTIONS.DOWN, false)
+        cube3d.DPrime()
       } else {
         cube.D()
-        queueMove(DIRECTIONS.DOWN)
+        cube3d.D()
       }
     } else if (e.key.toLowerCase() === 'f') {
       if (e.shiftKey) {
         cube.FPrime()
-        queueMove(DIRECTIONS.FRONT, false)
+        cube3d.FPrime()
       } else {
         cube.F()
-        queueMove(DIRECTIONS.FRONT)
+        cube3d.F()
       }
     } else if (e.key.toLowerCase() === 'b') {
       if (e.shiftKey) {
         cube.BPrime()
-        queueMove(DIRECTIONS.BACK, false)
+        cube3d.BPrime()
       } else {
         cube.B()
-        queueMove(DIRECTIONS.BACK)
+        cube3d.B()
       }
     // Advanced moves
     } else if (e.key.toLowerCase() === 'm') {
       if (e.shiftKey) {
         cube.mPrime()
+        cube3d.mPrime()
       } else {
         cube.m()
+        cube3d.m()
       }
     } else if (e.key.toLowerCase() === 'e') {
       if (e.shiftKey) {
         cube.ePrime()
+        cube3d.ePrime()
       } else {
         cube.e()
+        cube3d.e()
       }
     } else if (e.key.toLowerCase() === 's') {
       if (e.shiftKey) {
         cube.sPrime()
+        cube3d.sPrime()
       } else {
         cube.s()
+        cube3d.s()
       }
     // Rotations
     } else if (e.key.toLowerCase() === 'x') {
       if (e.shiftKey) {
         cube.xPrime()
+        cube3d.xPrime()
       } else {
         cube.x()
+        cube3d.x()
       }
     } else if (e.key.toLowerCase() === 'y') {
       if (e.shiftKey) {
         cube.yPrime()
+        cube3d.yPrime()
       } else {
         cube.y()
+        cube3d.y()
       }
     } else if (e.key.toLowerCase() === 'z') {
       if (e.shiftKey) {
         cube.zPrime()
+        cube3d.zPrime()
       } else {
         cube.z()
+        cube3d.z()
       }
     }
 

@@ -1,105 +1,97 @@
-import type { Cubie } from '$lib/models/cube3d'
-import * as THREE from 'three'
-import * as Utils from 'three/src/math/MathUtils'
-import { cube3dState, moveState } from '$lib/stores/cube3dState'
+import { Vector3, Quaternion, Matrix4 } from 'three'
+import { cameraState, rotationState } from '$lib/stores/cube3dState'
+import { DIRECTIONS } from '$lib/models/cube3d'
+import { roundVectorComponents } from './permutation'
 
-// Function for rounding a vector to the nearest integer - used to account for precision error
-function roundVectorComponents(vector: THREE.Vector3): THREE.Vector3 {
-  vector.x = Math.round(vector.x)
-  vector.y = Math.round(vector.y)
-  vector.z = Math.round(vector.z)
+function rotatePosition(position: Vector3, axis: Vector3): Vector3 {
+  let angle = Math.PI/2
+  let origin = new Vector3(0, 0, 0)
 
-  return vector
+  const translatedPosition = position.clone().sub(origin)
+  
+  const rotationMatrix = new Matrix4()
+  rotationMatrix.makeRotationAxis(axis.normalize(), angle)
+  const rotatedPosition = translatedPosition.applyMatrix4(rotationMatrix)
+  rotatedPosition.add(origin)
+  
+  return rotatedPosition
 }
 
-// This function checks if the cubie's position aligns with the provided rotation axis
-function isCubieOnTargetFace(cubie: Cubie, rotationAxis: THREE.Vector3): boolean {
-    if (rotationAxis.x) return cubie.position.x === rotationAxis.x
-    if (rotationAxis.y) return cubie.position.y === rotationAxis.y
-    if (rotationAxis.z) return cubie.position.z === rotationAxis.z
-    return false
+function negateAxis(axis: Vector3) {
+  return new Vector3(-axis.x, -axis.y, -axis.z)
 }
 
-export function turn(rotationAxis: THREE.Vector3, isClockwise: boolean = true, turnDuration: number = 0.15) {
+export function rotate(
+  axis: Vector3, 
+  isClockwise: boolean = true,
+  rotationDuration: number = 0.2
+) {
+  axis = isClockwise ? axis : negateAxis(axis)
+
+  let cameraPosition: Vector3 = new Vector3(6, 6, 6)
+  let upVector: Vector3 = new Vector3(0, 1, 0)
+  cameraState.subscribe((state) => {
+    cameraPosition = state.position
+    upVector = state.up
+  })
+  
+  const startPosition = cameraPosition
+  const endPosition = rotatePosition(startPosition, axis)
+
+  const origin = new Vector3(0, 0, 0)
+  const startQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(startPosition, origin, axis))
+  const endQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(endPosition, origin, axis))
+  
+  const startUpQuaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), upVector)
+  const endUpQuaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), DIRECTIONS.UP)
+  
   let startTime: number | null = null
-  const ROTATION_DIRECTION_AMOUNT = isClockwise ? -Math.PI/2 : Math.PI/2
-  const rotationCenter = rotationAxis
-
-  // Reactively extract cubies from the store
-  let cubies: Cubie[] = []
-  cube3dState.subscribe((state) => {
-    cubies = state.map((cubie) => cubie)
-  })
-
-  // Extract cubies that should be targeted by this rotation
-  let targetFace = cubies
-      .map((cubie, idx) => ({ cubie, originalIdx: idx }))
-      .filter(({ cubie }) => isCubieOnTargetFace(cubie, rotationAxis))
-
-  // Store initial position and rotation for all cubies on the target face
-  const initialRotations = targetFace.map(({ cubie }) => cubie.rotation.clone())
-  const initialPositions = targetFace.map(({ cubie }) => cubie.position.clone())
-
-  // Compute the final rotations for all cubies
-  const GLOBAL_QUATERNION = new THREE.Quaternion().setFromAxisAngle(rotationAxis, ROTATION_DIRECTION_AMOUNT)
-  const finalRotations = targetFace.map(({ cubie }) => {
-    return GLOBAL_QUATERNION.clone().multiply(cubie.rotation)
-  })
-
-  requestAnimationFrame(animateFrame)
-
-  function animateFrame(timestamp: number) {
+  function animateRotationFrame(timestamp: number) {
     if (startTime === null) {
       startTime = timestamp
     }
     const elapsedTime = (timestamp - startTime) / 1000
-    const currentRotation = Utils.lerp(0, ROTATION_DIRECTION_AMOUNT, elapsedTime / turnDuration)
-
-    targetFace.forEach(({ originalIdx }, idx) => {
-      // Translate the position of each cubie around the center of the face
-      let relativePosition = initialPositions[idx].clone().sub(rotationCenter);
-      relativePosition = relativePosition.clone().applyAxisAngle(rotationAxis, currentRotation);
-      // cubies[originalIdx].position = relativePosition.add(rotationCenter)
-      cube3dState.update((state) => state.map((cubie, stateIdx) => 
-        stateIdx === originalIdx ? { ...cubie, position: relativePosition.add(rotationCenter) } : cubie
-      ))
-
-      // Rotate the cubie around the center of the face
-      const newQuaternion = new THREE.Quaternion()
-      newQuaternion.slerpQuaternions(initialRotations[idx], finalRotations[idx], elapsedTime / turnDuration)
-      // cubies[originalIdx].rotation = newQuaternion
-      cube3dState.update((state) => state.map((cubie, stateIdx) => 
-        stateIdx === originalIdx ? { ...cubie, rotation: newQuaternion } : cubie
-      ))
-    })
-
-
-    if (elapsedTime < turnDuration) {
-      requestAnimationFrame(animateFrame);
-    } else {
-      // Snap the cubies to their final positions
-      targetFace.forEach(({ originalIdx }, idx) => {
-        // Translate the position of each cubie around the center of the face
-        let relativePosition = initialPositions[idx].clone().sub(rotationCenter);
-        relativePosition = relativePosition.clone().applyAxisAngle(rotationAxis, ROTATION_DIRECTION_AMOUNT)
-        // Ensure that the cubie is exactly on the target face by rounding the position
-        // cubies[originalIdx].position = roundVectorComponents(relativePosition.add(rotationCenter))
-        cube3dState.update((state) => state.map((cubie, stateIdx) => 
-          stateIdx === originalIdx ? { ...cubie, position: roundVectorComponents(relativePosition.add(rotationCenter)) } : cubie
-        ))
-
-        // Rotate the cubie around the center of the face
-        // cubies[originalIdx].rotation = finalRotations[idx]
-        cube3dState.update((state) => state.map((cubie, stateIdx) => 
-          stateIdx === originalIdx ? { ...cubie, rotation: finalRotations[idx] } : cubie
-        ))
-      })
-      moveState.update((state) => {
+    
+    if (elapsedTime < rotationDuration) {
+      const currentQuaternion = new Quaternion()
+      currentQuaternion.slerpQuaternions(startQuaternion, endQuaternion, elapsedTime / rotationDuration)
+      
+      const direction = new Vector3(0, 0, 1).applyQuaternion(currentQuaternion)
+      cameraState.update((state) => {
         return {
           ...state,
-          isMoving: false
+          position: direction.multiplyScalar(startPosition.length())
+        }
+      })
+      
+      const currentUpQuaternion = new Quaternion()
+      currentUpQuaternion.slerpQuaternions(startUpQuaternion, endUpQuaternion, elapsedTime / rotationDuration)
+      
+      const currentUpVector = new Vector3(0, 1, 0).applyQuaternion(currentUpQuaternion)
+      cameraState.update((state) => {
+        return {
+          ...state,
+          up: currentUpVector
+        }
+      })
+
+      requestAnimationFrame(animateRotationFrame)
+    } else {
+      cameraState.update((state) => {
+        return {
+          position: endPosition,
+          up: roundVectorComponents(upVector)
+        }
+      })
+
+      rotationState.update((state) => {
+        return {
+          ...state,
+          isRotating: false
         }
       })
     }
   }
+  
+  requestAnimationFrame(animateRotationFrame)
 }
