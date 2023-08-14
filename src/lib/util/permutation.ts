@@ -22,7 +22,6 @@ function isCubieOnTargetFace(cubie: Cubie, rotationAxis: Vector3): boolean {
 }
 
 export function turn(rotationAxis: Vector3, isClockwise: boolean = true, turnDuration: number = 0.15) {
-  let startTime: number | null = null
   const ROTATION_DIRECTION_AMOUNT = isClockwise ? -Math.PI/2 : Math.PI/2
 
   // Reactively extract cubies from the store
@@ -46,9 +45,10 @@ export function turn(rotationAxis: Vector3, isClockwise: boolean = true, turnDur
     return GLOBAL_QUATERNION.clone().multiply(cubie.rotation)
   })
 
-  requestAnimationFrame(animateFrame)
+  requestAnimationFrame(animateTurnFrame)
 
-  function animateFrame(timestamp: number) {
+  let startTime: number | null = null
+  function animateTurnFrame(timestamp: number) {
     if (startTime === null) {
       startTime = timestamp
     }
@@ -57,8 +57,8 @@ export function turn(rotationAxis: Vector3, isClockwise: boolean = true, turnDur
 
     targetFace.forEach(({ originalIdx }, idx) => {
       // Translate the position of each cubie around the center of the face
-      let relativePosition = initialPositions[idx].clone().sub(rotationAxis);
-      relativePosition = relativePosition.clone().applyAxisAngle(rotationAxis, currentRotation);
+      let relativePosition = initialPositions[idx].clone().sub(rotationAxis)
+      relativePosition = relativePosition.clone().applyAxisAngle(rotationAxis, currentRotation)
       cube3dState.update((state) => {
         return {
           ...state,
@@ -83,12 +83,12 @@ export function turn(rotationAxis: Vector3, isClockwise: boolean = true, turnDur
 
 
     if (elapsedTime < turnDuration) {
-      requestAnimationFrame(animateFrame);
+      requestAnimationFrame(animateTurnFrame)
     } else {
       // Snap the cubies to their final positions
       targetFace.forEach(({ originalIdx }, idx) => {
         // Translate the position of each cubie around the center of the face
-        let relativePosition = initialPositions[idx].clone().sub(rotationAxis);
+        let relativePosition = initialPositions[idx].clone().sub(rotationAxis)
         relativePosition = relativePosition.clone().applyAxisAngle(rotationAxis, ROTATION_DIRECTION_AMOUNT)
         // Ensure that the cubie is exactly on the target face by rounding the position
         cube3dState.update((state) => {

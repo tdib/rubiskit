@@ -13,13 +13,13 @@
   let upVector = $cameraState.up
   $: upVector = $cameraState.up
 
-  const defaultRotationSpeed = 200
+  const defaultRotationSpeed = 0.2
   let rotationSpeed = defaultRotationSpeed
   $: if (!$rotationState.isRotating && $rotationState.rotationQueue.length > 0) {
     $rotationState.isRotating = true
 
     if ($rotationState.rotationQueue.length > 1) {
-      rotationSpeed = defaultRotationSpeed/(1 + $rotationState.rotationQueue.length*defaultRotationSpeed/700)
+      rotationSpeed = defaultRotationSpeed/(1 + $rotationState.rotationQueue.length*defaultRotationSpeed)
     } else {
       rotationSpeed = defaultRotationSpeed
     }

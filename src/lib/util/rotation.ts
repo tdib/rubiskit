@@ -24,7 +24,7 @@ function negateAxis(axis: Vector3) {
 export function rotate(
   axis: Vector3, 
   isClockwise: boolean = true,
-  rotationDuration: number = 200
+  rotationDuration: number = 0.2
 ) {
   axis = isClockwise ? axis : negateAxis(axis)
 
@@ -39,24 +39,24 @@ export function rotate(
   const endPosition = rotatePosition(startPosition, axis)
 
   const origin = new Vector3(0, 0, 0)
-  const startQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(startPosition, origin, axis));
-  const endQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(endPosition, origin, axis));
+  const startQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(startPosition, origin, axis))
+  const endQuaternion = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(endPosition, origin, axis))
   
-  const startUpQuaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), upVector);
-  const endUpQuaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), DIRECTIONS.UP);
+  const startUpQuaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), upVector)
+  const endUpQuaternion = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), DIRECTIONS.UP)
   
-  let animationProgress = 0;
-  const startTime = Date.now();
-  
-  const animate = () => {
-    const elapsed = Date.now() - startTime;
-    animationProgress = elapsed / rotationDuration;
+  let startTime: number | null = null
+  function animateRotationFrame(timestamp: number) {
+    if (startTime === null) {
+      startTime = timestamp
+    }
+    const elapsedTime = (timestamp - startTime) / 1000
     
-    if (animationProgress < 1) {
-      const currentQuaternion = new Quaternion();
-      currentQuaternion.slerpQuaternions(startQuaternion, endQuaternion, animationProgress)
+    if (elapsedTime < rotationDuration) {
+      const currentQuaternion = new Quaternion()
+      currentQuaternion.slerpQuaternions(startQuaternion, endQuaternion, elapsedTime / rotationDuration)
       
-      const direction = new Vector3(0, 0, 1).applyQuaternion(currentQuaternion);
+      const direction = new Vector3(0, 0, 1).applyQuaternion(currentQuaternion)
       cameraState.update((state) => {
         return {
           ...state,
@@ -64,10 +64,10 @@ export function rotate(
         }
       })
       
-      const currentUpQuaternion = new Quaternion();
-      currentUpQuaternion.slerpQuaternions(startUpQuaternion, endUpQuaternion, animationProgress);
+      const currentUpQuaternion = new Quaternion()
+      currentUpQuaternion.slerpQuaternions(startUpQuaternion, endUpQuaternion, elapsedTime / rotationDuration)
       
-      const currentUpVector = new Vector3(0, 1, 0).applyQuaternion(currentUpQuaternion);
+      const currentUpVector = new Vector3(0, 1, 0).applyQuaternion(currentUpQuaternion)
       cameraState.update((state) => {
         return {
           ...state,
@@ -75,7 +75,7 @@ export function rotate(
         }
       })
 
-      requestAnimationFrame(animate);
+      requestAnimationFrame(animateRotationFrame)
     } else {
       cameraState.update((state) => {
         return {
@@ -91,7 +91,7 @@ export function rotate(
         }
       })
     }
-  };
+  }
   
-  animate();
+  requestAnimationFrame(animateRotationFrame)
 }
