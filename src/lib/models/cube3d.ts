@@ -1,5 +1,6 @@
 import { Vector3, Quaternion, Color } from 'three'
 import { cube3dState, moveState } from '$lib/stores/cube3dState'
+import { animateCameraRotation } from '$lib/util/rotation'
 
 export const RED = new Color('#a61b1b')
 export const BLUE = new Color('#1c52c7')
@@ -20,18 +21,27 @@ type CubieColour = {
 export type Cubie = {
   position: Vector3
   rotation: Quaternion
-  globalRotation: Quaternion
   colour: CubieColour
 }
 
-export const DIRECTIONS = {
+const DIRECTIONS = {
   UP: new Vector3(0, 1, 0),
   LEFT: new Vector3(-1, 0, 0),
   FRONT: new Vector3(0, 0, 1),
   RIGHT: new Vector3(1, 0, 0),
   BACK: new Vector3(0, 0, -1),
   DOWN: new Vector3(0, -1, 0),
-} as const
+}
+
+const AXIS = {
+  x: new Vector3(1, 0, 0),
+  y: new Vector3(0, 1, 0),
+  z: new Vector3(0, 0, 1),
+}
+
+function negateAxis(axis: Vector3) {
+  return new Vector3(-axis.x, -axis.y, -axis.z)
+}
 
 function queueMove(move: Vector3, isClockwise: boolean = true) {
   moveState.update((state) => {
@@ -90,39 +100,134 @@ export class Cube3D {
   }
   
   x() {
+    animateCameraRotation(AXIS.x)
+
+    // Get the relevant faces for this rotation
+    let u = DIRECTIONS.UP
+    let b = DIRECTIONS.BACK
+    let d = DIRECTIONS.DOWN
+    let f = DIRECTIONS.FRONT
+
+    // Rotate the faces
+    DIRECTIONS.UP = f
+    DIRECTIONS.BACK = u
+    DIRECTIONS.DOWN = b
+    DIRECTIONS.FRONT = d
   }
   
   xPrime() {
+    animateCameraRotation(negateAxis(AXIS.x))
+
+    // Get the relevant faces for this rotation
+    let u = DIRECTIONS.UP
+    let b = DIRECTIONS.BACK
+    let d = DIRECTIONS.DOWN
+    let f = DIRECTIONS.FRONT
+
+    // Rotate the faces
+    DIRECTIONS.UP = b
+    DIRECTIONS.BACK = d
+    DIRECTIONS.DOWN = f
+    DIRECTIONS.FRONT = u
   }
   
   y() {
+    animateCameraRotation(AXIS.y)
+
+    // Get the relevant faces for this rotation
+    let f = DIRECTIONS.FRONT
+    let r = DIRECTIONS.RIGHT
+    let b = DIRECTIONS.BACK
+    let l = DIRECTIONS.LEFT
+
+    // Rotate the faces
+    DIRECTIONS.FRONT = r
+    DIRECTIONS.RIGHT = b
+    DIRECTIONS.BACK = l
+    DIRECTIONS.LEFT = f
   }
   
   yPrime() {
+    animateCameraRotation(negateAxis(AXIS.y))
+    // Get the relevant faces for this rotation
+    let f = DIRECTIONS.FRONT
+    let r = DIRECTIONS.RIGHT
+    let b = DIRECTIONS.BACK
+    let l = DIRECTIONS.LEFT
+
+    // Rotate the faces
+    DIRECTIONS.FRONT = l
+    DIRECTIONS.RIGHT = f
+    DIRECTIONS.BACK = r
+    DIRECTIONS.LEFT = b
   }
   
   z() {
+    animateCameraRotation(AXIS.z)
+    
+    // Get the relevant faces for this rotation
+    let u = DIRECTIONS.UP
+    let l = DIRECTIONS.LEFT
+    let d = DIRECTIONS.DOWN
+    let r = DIRECTIONS.RIGHT
+
+    // Rotate the faces
+    DIRECTIONS.UP = l
+    DIRECTIONS.LEFT = d
+    DIRECTIONS.DOWN = r
+    DIRECTIONS.RIGHT = u
   }
   
   zPrime() {
+    animateCameraRotation(negateAxis(AXIS.z))
+
+    // Get the relevant faces for this rotation
+    let u = DIRECTIONS.UP
+    let l = DIRECTIONS.LEFT
+    let d = DIRECTIONS.DOWN
+    let r = DIRECTIONS.RIGHT
+
+    // Rotate the faces
+    DIRECTIONS.UP = r
+    DIRECTIONS.LEFT = u
+    DIRECTIONS.DOWN = l
+    DIRECTIONS.RIGHT = d
   }
   
   // Advanced moves
   m() {
+      this.R()
+      this.LPrime()
+      this.xPrime()
   }
-  
+
   mPrime() {
+      this.RPrime()
+      this.L()
+      this.x()
   }
-  
+
   e() {
+      this.U()
+      this.DPrime()
+      this.yPrime()
   }
-  
+
   ePrime() {
+      this.UPrime()
+      this.D()
+      this.y()
   }
-  
+
   s() {
+      this.FPrime()
+      this.B()
+      this.z()
   }
-  
+
   sPrime() {
+      this.F()
+      this.BPrime()
+      this.zPrime()
   }
 }

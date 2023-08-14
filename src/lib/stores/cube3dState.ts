@@ -2,6 +2,16 @@ import { writable } from 'svelte/store'
 import { Vector3, Quaternion } from 'three'
 import { WHITE, GREEN, BLUE, RED, ORANGE, YELLOW, type Cubie } from '$lib/models/cube3d'
 
+interface Camera {
+  position: Vector3
+  up: Vector3
+}
+
+export const cameraState = writable<Camera>({
+  position: new Vector3(6, 6, 6),
+  up: new Vector3(0, 1, 0)
+})
+
 export const moveState = writable<{
   moveQueue: { move: Vector3, isClockwise: boolean }[],
   isMoving: boolean
@@ -14,7 +24,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, 1, -1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       up: WHITE,
       back: BLUE,
@@ -24,7 +33,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(0, 1, -1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       up: WHITE,
       back: BLUE,
@@ -33,7 +41,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(-1, 1, -1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       up: WHITE,
       back: BLUE,
@@ -43,7 +50,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, 0, -1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       back: BLUE,
       right: RED,
@@ -52,7 +58,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(0, 0, -1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       back: BLUE,
     }
@@ -60,7 +65,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(-1, 0, -1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       back: BLUE,
       left: ORANGE,
@@ -69,7 +73,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, -1, -1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       back: BLUE,
       right: RED,
@@ -79,7 +82,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(0, -1, -1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       back: BLUE,
       down: YELLOW,
@@ -88,7 +90,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(-1, -1, -1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       back: BLUE,
       down: YELLOW,
@@ -98,7 +99,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, -1, 0),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       right: RED,
       down: YELLOW,
@@ -107,7 +107,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(0, -1, 0),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       down: YELLOW,
     }
@@ -115,7 +114,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(-1, -1, 0),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       down: YELLOW,
       left: ORANGE,
@@ -124,7 +122,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, 0, 0),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       right: RED,
     }
@@ -132,13 +129,11 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(0, 0, 0),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {}
   },
   {
     position: new Vector3(-1, 0, 0),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       left: ORANGE,
     }
@@ -146,7 +141,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(-1, 1, 0),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       up: WHITE,
       left: ORANGE,
@@ -155,7 +149,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(0, 1, 0),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       up: WHITE,
     }
@@ -163,7 +156,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, 1, 0),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       up: WHITE,
       right: RED,
@@ -172,7 +164,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, 1, 1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       front: GREEN,
       up: WHITE,
@@ -182,7 +173,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(0, 1, 1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       front: GREEN,
       up: WHITE,
@@ -191,7 +181,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(-1, 1, 1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       front: GREEN,
       up: WHITE,
@@ -201,7 +190,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, 0, 1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       front: GREEN,
       right: RED
@@ -210,7 +198,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(0, 0, 1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       front: GREEN,
     }
@@ -218,7 +205,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(-1, 0, 1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       front: GREEN,
       left: ORANGE,
@@ -227,7 +213,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(1, -1, 1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       front: GREEN,
       right: RED,
@@ -237,7 +222,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(0, -1, 1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       front: GREEN,
       down: YELLOW,
@@ -246,7 +230,6 @@ export const SOLVED_CUBE_STATE = [
   {
     position: new Vector3(-1, -1, 1),
     rotation: new Quaternion(),
-    globalRotation: new Quaternion(),
     colour: {
       front: GREEN,
       left: ORANGE,
@@ -255,4 +238,7 @@ export const SOLVED_CUBE_STATE = [
   },
 ] as const
 
-export const cube3dState = writable<Cubie[]>([...SOLVED_CUBE_STATE])
+export const cube3dState = writable<{ cubies: Cubie[], rotation: Vector3 }>({
+  cubies: [...SOLVED_CUBE_STATE],
+  rotation: new Vector3(0, 0, 0)
+})

@@ -3,8 +3,14 @@
   import { OrbitControls } from '@threlte/extras'
   import { Euler } from 'three'
   import Cubie from './Cubie.svelte'
-  import { cube3dState, moveState } from '$lib/stores/cube3dState'
+  import { cube3dState, moveState, cameraState } from '$lib/stores/cube3dState'
   import { turn } from '$lib/util/permutation'
+
+  let cameraPosition = $cameraState.position
+  $: cameraPosition = $cameraState.position
+
+  let upVector = $cameraState.up
+  $: upVector = $cameraState.up
 
 
   let defaultTurnSpeed = 0.15
@@ -25,15 +31,14 @@
     )
     $moveState.moveQueue.shift()
   }
-
-  
 </script>
 
 <div>
   <Canvas>
     <T.PerspectiveCamera
       makeDefault
-      position={[6, 6, 6]}
+      position={[cameraPosition.x, cameraPosition.y, cameraPosition.z]}
+      up={[upVector.x, upVector.y, upVector.z]}
     >
       <OrbitControls
         enableZoom={false}
@@ -45,7 +50,7 @@
     <T.AmbientLight intensity={0.8} />
 
     <!-- <Float> -->
-    {#each $cube3dState as cubie}
+    {#each $cube3dState.cubies as cubie}
       <Cubie
         position={[cubie.position.x, cubie.position.y, cubie.position.z]}
         rotation={new Euler().setFromQuaternion(cubie.rotation)}
