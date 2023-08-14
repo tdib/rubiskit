@@ -12,7 +12,6 @@
   let upVector = $cameraState.up
   $: upVector = $cameraState.up
 
-
   let defaultTurnSpeed = 0.15
   let turnSpeed = defaultTurnSpeed
   $: if (!$moveState.isMoving && $moveState.moveQueue.length > 0) {
@@ -31,6 +30,7 @@
     )
     $moveState.moveQueue.shift()
   }
+
 </script>
 
 <div>

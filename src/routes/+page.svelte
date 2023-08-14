@@ -8,6 +8,13 @@
   let cube = new Cube()
   let cube3d = new Cube3DClass()
 
+  function queueMove(move: Vector3, isClockwise: boolean = true) {
+    moveState.update((state) => {
+      state.moveQueue.push({ move: move, isClockwise: isClockwise })
+      return { ...state }
+    })
+  }
+
   function handleKeyPress(e: KeyboardEvent) {
     // Main permutations
     if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'r') {

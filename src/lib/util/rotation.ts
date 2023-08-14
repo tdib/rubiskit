@@ -31,23 +31,6 @@ function determineUpVector(rotationAxis: Vector3): Vector3 {
   throw new Error("Unsupported rotation axis");
 }
 
-// function determineUpVector(rotationAxis: Vector3): Vector3 {
-//   if (rotationAxis.equals(new Vector3(0, 1, 0))) {
-//     return new Vector3(0, 1, 0);
-//   } else if (rotationAxis.equals(new Vector3(0, -1, 0))) {
-//     return new Vector3(0, 1, 0);
-//   } else if (rotationAxis.equals(new Vector3(1, 0, 0))) {
-//     return new Vector3(0, 0, 1);
-//   } else if (rotationAxis.equals(new Vector3(-1, 0, 0))) {
-//     return new Vector3(0, 0, -1);
-//   } else if (rotationAxis.equals(new Vector3(0, 0, 1))) {
-//     return new Vector3(-1, 0, 0);
-//   } else if (rotationAxis.equals(new Vector3(0, 0, -1))) {
-//     return new Vector3(1, 0, 0);
-//   }
-//   throw new Error("Unsupported rotation axis");
-// }
-
 export function animateCameraRotation(
   axis: Vector3, 
   pivot: Vector3 = new Vector3(0, 0, 0),
