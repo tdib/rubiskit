@@ -24,7 +24,7 @@ function negateAxis(axis: Vector3) {
 export function rotate(
   axis: Vector3, 
   isClockwise: boolean = true,
-  duration: number = 500
+  rotationDuration: number = 200
 ) {
   axis = isClockwise ? axis : negateAxis(axis)
 
@@ -50,7 +50,7 @@ export function rotate(
   
   const animate = () => {
     const elapsed = Date.now() - startTime;
-    animationProgress = elapsed / duration;
+    animationProgress = elapsed / rotationDuration;
     
     if (animationProgress < 1) {
       const currentQuaternion = new Quaternion();

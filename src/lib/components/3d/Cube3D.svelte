@@ -13,19 +13,29 @@
   let upVector = $cameraState.up
   $: upVector = $cameraState.up
 
+  const defaultRotationSpeed = 200
+  let rotationSpeed = defaultRotationSpeed
   $: if (!$rotationState.isRotating && $rotationState.rotationQueue.length > 0) {
     $rotationState.isRotating = true
+
+    if ($rotationState.rotationQueue.length > 1) {
+      rotationSpeed = defaultRotationSpeed/(1 + $rotationState.rotationQueue.length*defaultRotationSpeed/700)
+    } else {
+      rotationSpeed = defaultRotationSpeed
+    }
+
     let r = $rotationState.rotationQueue[0]
     rotate(
       r.axis,
-      r.isClockwise
+      r.isClockwise,
+      rotationSpeed
     )
     // $rotationState.rotationQueue[0].rotation.start()
     $rotationState.rotationQueue.shift()
   }
 
 
-  let defaultTurnSpeed = 0.15
+  const defaultTurnSpeed = 0.15
   let turnSpeed = defaultTurnSpeed
   $: if (!$moveState.isMoving && $moveState.moveQueue.length > 0) {
     $moveState.isMoving = true

@@ -33,10 +33,6 @@ export const DIRECTIONS = {
   DOWN: new Vector3(0, -1, 0),
 }
 
-// export function negateAxis(axis: Vector3) {
-//   return new Vector3(-axis.x, -axis.y, -axis.z)
-// }
-
 function queueMove(move: Vector3, isClockwise: boolean = true) {
   moveState.update((state) => {
     state.moveQueue.push({ move, isClockwise })
