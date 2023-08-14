@@ -1,6 +1,6 @@
 <script lang='ts'>
   import { Canvas, T } from '@threlte/core'
-  import { OrbitControls } from '@threlte/extras'
+  import { OrbitControls, Float } from '@threlte/extras'
   import { Euler } from 'three'
   import Cubie from './Cubie.svelte'
   import { cube3dState, moveState, cameraState, rotationState } from '$lib/stores/cube3dState'
@@ -30,10 +30,9 @@
       r.isClockwise,
       rotationSpeed
     )
-    // $rotationState.rotationQueue[0].rotation.start()
+
     $rotationState.rotationQueue.shift()
   }
-
 
   const defaultTurnSpeed = 0.15
   let turnSpeed = defaultTurnSpeed
@@ -64,28 +63,27 @@
       up={[upVector.x, upVector.y, upVector.z]}
     >
       <OrbitControls
-        enableZoom={false}
         enableDamping
-        autoRotateSpeed={0.2}
+        enableRotate={false}
       />
     </T.PerspectiveCamera>
 
     <T.AmbientLight intensity={0.8} />
 
-    <!-- <Float> -->
-    {#each $cube3dState.cubies as cubie}
-      <Cubie
-        position={[cubie.position.x, cubie.position.y, cubie.position.z]}
-        rotation={new Euler().setFromQuaternion(cubie.rotation)}
-        colour1={cubie.colour.right}
-        colour2={cubie.colour.left}
-        colour3={cubie.colour.up}
-        colour4={cubie.colour.down}
-        colour5={cubie.colour.front}
-        colour6={cubie.colour.back}
-      />
-    {/each}
-    <!-- </Float> -->
+    <Float floatIntensity={0.5} speed={5}>
+      {#each $cube3dState.cubies as cubie}
+        <Cubie
+          position={[cubie.position.x, cubie.position.y, cubie.position.z]}
+          rotation={new Euler().setFromQuaternion(cubie.rotation)}
+          colour1={cubie.colour.right}
+          colour2={cubie.colour.left}
+          colour3={cubie.colour.up}
+          colour4={cubie.colour.down}
+          colour5={cubie.colour.front}
+          colour6={cubie.colour.back}
+        />
+      {/each}
+    </Float>
 
 
   </Canvas>
