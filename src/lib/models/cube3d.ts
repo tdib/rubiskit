@@ -24,7 +24,7 @@ export type Cubie = {
   colour: CubieColour
 }
 
-const DIRECTIONS = {
+export const DIRECTIONS = {
   UP: new Vector3(0, 1, 0),
   LEFT: new Vector3(-1, 0, 0),
   FRONT: new Vector3(0, 0, 1),
@@ -39,7 +39,7 @@ const AXIS = {
   z: new Vector3(0, 0, 1),
 }
 
-function negateAxis(axis: Vector3) {
+export function negateAxis(axis: Vector3) {
   return new Vector3(-axis.x, -axis.y, -axis.z)
 }
 
@@ -100,7 +100,7 @@ export class Cube3D {
   }
   
   x() {
-    animateCameraRotation(AXIS.x)
+    animateCameraRotation(DIRECTIONS.RIGHT)
 
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
@@ -116,7 +116,7 @@ export class Cube3D {
   }
   
   xPrime() {
-    animateCameraRotation(negateAxis(AXIS.x))
+    animateCameraRotation(negateAxis(DIRECTIONS.RIGHT))
 
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
@@ -132,7 +132,7 @@ export class Cube3D {
   }
   
   y() {
-    animateCameraRotation(AXIS.y)
+    animateCameraRotation(DIRECTIONS.UP)
 
     // Get the relevant faces for this rotation
     let f = DIRECTIONS.FRONT
@@ -148,7 +148,8 @@ export class Cube3D {
   }
   
   yPrime() {
-    animateCameraRotation(negateAxis(AXIS.y))
+    animateCameraRotation(negateAxis(DIRECTIONS.UP))
+    
     // Get the relevant faces for this rotation
     let f = DIRECTIONS.FRONT
     let r = DIRECTIONS.RIGHT
@@ -163,8 +164,8 @@ export class Cube3D {
   }
   
   z() {
-    animateCameraRotation(AXIS.z)
-    
+    animateCameraRotation(DIRECTIONS.FRONT)
+
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
     let l = DIRECTIONS.LEFT
@@ -179,7 +180,7 @@ export class Cube3D {
   }
   
   zPrime() {
-    animateCameraRotation(negateAxis(AXIS.z))
+    animateCameraRotation(negateAxis(DIRECTIONS.FRONT))
 
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP

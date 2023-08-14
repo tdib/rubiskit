@@ -5,7 +5,7 @@ import * as Utils from 'three/src/math/MathUtils'
 import { cube3dState, moveState } from '$lib/stores/cube3dState'
 
 // Function for rounding a vector to the nearest integer - used to account for precision error
-function roundVectorComponents(vector: THREE.Vector3): THREE.Vector3 {
+export function roundVectorComponents(vector: THREE.Vector3): THREE.Vector3 {
   vector.x = Math.round(vector.x)
   vector.y = Math.round(vector.y)
   vector.z = Math.round(vector.z)
