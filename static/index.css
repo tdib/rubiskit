@@ -1,3 +1,20 @@
 body {
-  font-family: 'Poppins'
+  margin: 0;
+  font-family: 'Poppins';
+  background: var(--background);
+  color: var(--text);
+}
+
+.dark {
+  --text: hsl(200, 50%, 40%);
+  --surface: hsl(200, 50%, 63%);
+  --surface-text: hsl(200, 50%, 20%);
+  --background: linear-gradient(180deg, hsl(220, 42%, 12%) 0%, hsl(220, 45%, 5%) 100%);
+}
+
+.light {
+  --text: hsl(200, 60%, 20%);
+  --surface: hsl(200, 55%, 65%);
+  --surface-text: hsl(200, 50%, 20%);
+  --background: linear-gradient(180deg, hsl(220, 70%, 90%) 0%, hsl(220, 70%, 85%) 100%);
 }

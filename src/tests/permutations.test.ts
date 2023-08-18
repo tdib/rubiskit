@@ -1,13 +1,13 @@
 import { test, expect, beforeEach } from 'vitest'
-import { Cube } from '$lib/models/cube'
+import { Cube2D } from '$lib/models/cube2d'
 
-let cube: Cube
+let cube2d: Cube2D
 beforeEach(() => {
-  cube = new Cube()
+  cube2d = new Cube2D()
 })
 
 test('R U R\'', () => {
-  expect(cube.R().U().RPrime().state).toEqual([
+  expect(cube2d.R().U().RPrime().state).toEqual([
     [['W', 'W', 'W'], ['W', 'W', 'W'], ['G', 'G', 'O']], // Up
     [['G', 'G', 'Y'], ['O', 'O', 'O'], ['O', 'O', 'O']], // Left
     [['R', 'R', 'W'], ['G', 'G', 'W'], ['G', 'G', 'G']], // Front
@@ -18,7 +18,7 @@ test('R U R\'', () => {
 })
 
 test('R U R\' U\'', () => {
-  expect(cube.R().U().RPrime().UPrime().state).toEqual([
+  expect(cube2d.R().U().RPrime().UPrime().state).toEqual([
     [['W', 'W', 'O'], ['W', 'W', 'G'], ['W', 'W', 'G']], // Up
     [['B', 'O', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O']], // Left
     [['G', 'G', 'Y'], ['G', 'G', 'W'], ['G', 'G', 'G']], // Front
@@ -29,7 +29,7 @@ test('R U R\' U\'', () => {
 })
 
 test('(R U R\' U\') x 6', () => {
-  expect(cube.R().U().RPrime().UPrime()
+  expect(cube2d.R().U().RPrime().UPrime()
     .R().U().RPrime().UPrime()
     .R().U().RPrime().UPrime()
     .R().U().RPrime().UPrime()
@@ -45,7 +45,7 @@ test('(R U R\' U\') x 6', () => {
 })
 
 test('(R U) x 105', () => {
-  expect(cube.R().U().R().U().R().U().R().U().R().U().R().U()
+  expect(cube2d.R().U().R().U().R().U().R().U().R().U().R().U()
     .R().U().R().U().R().U().R().U().R().U().R().U().R().U()
     .R().U().R().U().R().U().R().U().R().U().R().U().R().U()
     .R().U().R().U().R().U().R().U().R().U().R().U().R().U()
@@ -71,7 +71,7 @@ test('(R U) x 105', () => {
 })
 
 test('L\' U\' L', () => {
-  expect(cube.LPrime().UPrime().L().state).toEqual([
+  expect(cube2d.LPrime().UPrime().L().state).toEqual([
     [['W', 'W', 'W'], ['W', 'W', 'W'], ['R', 'G', 'G']], // Up
     [['O', 'O', 'B'], ['O', 'O', 'B'], ['O', 'O', 'W']], // Left
     [['W', 'O', 'O'], ['W', 'G', 'G'], ['G', 'G', 'G']], // Front
@@ -82,7 +82,7 @@ test('L\' U\' L', () => {
 })
 
 test('L\' U\' L U', () => {
-  expect(cube.LPrime().UPrime().L().U().state).toEqual([
+  expect(cube2d.LPrime().UPrime().L().U().state).toEqual([
     [['R', 'W', 'W'], ['G', 'W', 'W'], ['G', 'W', 'W']], // Up
     [['W', 'O', 'O'], ['O', 'O', 'B'], ['O', 'O', 'W']], // Left
     [['Y', 'G', 'G'], ['W', 'G', 'G'], ['G', 'G', 'G']], // Front
@@ -93,7 +93,7 @@ test('L\' U\' L U', () => {
 })
 
 test('(L\' U\' L U) x 6', () => {
-  expect(cube.LPrime().UPrime().L().U()
+  expect(cube2d.LPrime().UPrime().L().U()
     .LPrime().UPrime().L().U()
     .LPrime().UPrime().L().U()
     .LPrime().UPrime().L().U()
@@ -108,7 +108,7 @@ test('(L\' U\' L U) x 6', () => {
   ])
 })
 test('(L U) x 105', () => {
-  expect(cube.L().U().L().U().L().U().L().U().L().U().L().U()
+  expect(cube2d.L().U().L().U().L().U().L().U().L().U().L().U()
     .L().U().L().U().L().U().L().U().L().U().L().U().L().U()
     .L().U().L().U().L().U().L().U().L().U().L().U().L().U()
     .L().U().L().U().L().U().L().U().L().U().L().U().L().U()
@@ -134,7 +134,7 @@ test('(L U) x 105', () => {
 })
 
 test('(L U) x 105', () => {
-  expect(cube.L().U().L().U().L().U().L().U().L().U().L().U()
+  expect(cube2d.L().U().L().U().L().U().L().U().L().U().L().U()
     .L().U().L().U().L().U().L().U().L().U().L().U().L().U()
     .L().U().L().U().L().U().L().U().L().U().L().U().L().U()
     .L().U().L().U().L().U().L().U().L().U().L().U().L().U()
@@ -160,7 +160,7 @@ test('(L U) x 105', () => {
 })
 
 test('(R U R\' U\') (R\' F R2 U\' R\') U\' (R U R\' F\') - T Perm', () => {
-  expect(cube.R().U().RPrime().UPrime().RPrime().F().R().R().UPrime()
+  expect(cube2d.R().U().RPrime().UPrime().RPrime().F().R().R().UPrime()
     .RPrime().UPrime().R().U().RPrime().FPrime().state).toEqual([
     [['W', 'W', 'W'], ['W', 'W', 'W'], ['W', 'W', 'W']], // Up
     [['O', 'R', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O']], // Left

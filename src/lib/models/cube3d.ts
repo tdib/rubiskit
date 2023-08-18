@@ -1,6 +1,5 @@
 import { Vector3, Quaternion, Color } from 'three'
-import { cube3dState, moveState, rotationState } from '$lib/stores/cube3dState'
-import { rotate } from '$lib/util/rotation'
+import { moveState, rotationState } from '$lib/stores/cube3dState'
 
 export const RED = new Color('#a61b1b')
 export const BLUE = new Color('#1c52c7')
@@ -33,7 +32,7 @@ export const DIRECTIONS = {
   DOWN: new Vector3(0, -1, 0),
 }
 
-function queueMove(move: Vector3, isClockwise: boolean = true) {
+export function queueMove(move: Vector3, isClockwise: boolean = true) {
   moveState.update((state) => {
     state.moveQueue.push({ move, isClockwise })
     return { ...state }
@@ -51,7 +50,7 @@ export class Cube3D {
   R() {
     queueMove(DIRECTIONS.RIGHT)
   }
-
+  
   RPrime() {
     queueMove(DIRECTIONS.RIGHT, false)
   }
@@ -98,13 +97,13 @@ export class Cube3D {
   
   x() {
     queueRotation(DIRECTIONS.RIGHT)
-
+    
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
     let b = DIRECTIONS.BACK
     let d = DIRECTIONS.DOWN
     let f = DIRECTIONS.FRONT
-
+    
     // Rotate the faces
     DIRECTIONS.UP = f
     DIRECTIONS.BACK = u
@@ -114,13 +113,13 @@ export class Cube3D {
   
   xPrime() {
     queueRotation(DIRECTIONS.RIGHT, false)
-
+    
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
     let b = DIRECTIONS.BACK
     let d = DIRECTIONS.DOWN
     let f = DIRECTIONS.FRONT
-
+    
     // Rotate the faces
     DIRECTIONS.UP = b
     DIRECTIONS.BACK = d
@@ -130,13 +129,13 @@ export class Cube3D {
   
   y() {
     queueRotation(DIRECTIONS.UP)
-
+    
     // Get the relevant faces for this rotation
     let f = DIRECTIONS.FRONT
     let r = DIRECTIONS.RIGHT
     let b = DIRECTIONS.BACK
     let l = DIRECTIONS.LEFT
-
+    
     // Rotate the faces
     DIRECTIONS.FRONT = r
     DIRECTIONS.RIGHT = b
@@ -152,7 +151,7 @@ export class Cube3D {
     let r = DIRECTIONS.RIGHT
     let b = DIRECTIONS.BACK
     let l = DIRECTIONS.LEFT
-
+    
     // Rotate the faces
     DIRECTIONS.FRONT = l
     DIRECTIONS.RIGHT = f
@@ -162,13 +161,13 @@ export class Cube3D {
   
   z() {
     queueRotation(DIRECTIONS.FRONT)
-
+    
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
     let l = DIRECTIONS.LEFT
     let d = DIRECTIONS.DOWN
     let r = DIRECTIONS.RIGHT
-
+    
     // Rotate the faces
     DIRECTIONS.UP = l
     DIRECTIONS.LEFT = d
@@ -178,13 +177,13 @@ export class Cube3D {
   
   zPrime() {
     queueRotation(DIRECTIONS.FRONT, false)
-
+    
     // Get the relevant faces for this rotation
     let u = DIRECTIONS.UP
     let l = DIRECTIONS.LEFT
     let d = DIRECTIONS.DOWN
     let r = DIRECTIONS.RIGHT
-
+    
     // Rotate the faces
     DIRECTIONS.UP = r
     DIRECTIONS.LEFT = u
@@ -194,38 +193,38 @@ export class Cube3D {
   
   // Advanced moves
   m() {
-      this.R()
-      this.LPrime()
-      this.xPrime()
+    this.R()
+    this.LPrime()
+    this.xPrime()
   }
-
+  
   mPrime() {
-      this.RPrime()
-      this.L()
-      this.x()
+    this.RPrime()
+    this.L()
+    this.x()
   }
-
+  
   e() {
-      this.U()
-      this.DPrime()
-      this.yPrime()
+    this.U()
+    this.DPrime()
+    this.yPrime()
   }
-
+  
   ePrime() {
-      this.UPrime()
-      this.D()
-      this.y()
+    this.UPrime()
+    this.D()
+    this.y()
   }
-
+  
   s() {
-      this.FPrime()
-      this.B()
-      this.z()
+    this.FPrime()
+    this.B()
+    this.z()
   }
-
+  
   sPrime() {
-      this.F()
-      this.BPrime()
-      this.zPrime()
+    this.F()
+    this.BPrime()
+    this.zPrime()
   }
 }

@@ -5,7 +5,7 @@ import * as Utils from 'three/src/math/MathUtils'
 import { cube3dState, moveState } from '$lib/stores/cube3dState'
 
 // Function for rounding a vector to the nearest integer - used to account for precision error
-export function roundVectorComponents(vector: THREE.Vector3): THREE.Vector3 {
+export function roundVectorComponents(vector: Vector3): Vector3 {
   vector.x = Math.round(vector.x)
   vector.y = Math.round(vector.y)
   vector.z = Math.round(vector.z)
@@ -15,10 +15,10 @@ export function roundVectorComponents(vector: THREE.Vector3): THREE.Vector3 {
 
 // This function checks if the cubie's position aligns with the provided rotation axis
 function isCubieOnTargetFace(cubie: Cubie, rotationAxis: Vector3): boolean {
-    if (rotationAxis.x) return cubie.position.x === rotationAxis.x
-    if (rotationAxis.y) return cubie.position.y === rotationAxis.y
-    if (rotationAxis.z) return cubie.position.z === rotationAxis.z
-    return false
+  if (rotationAxis.x) return cubie.position.x === rotationAxis.x
+  if (rotationAxis.y) return cubie.position.y === rotationAxis.y
+  if (rotationAxis.z) return cubie.position.z === rotationAxis.z
+  return false
 }
 
 export function turn(rotationAxis: Vector3, isClockwise: boolean = true, turnDuration: number = 0.15) {

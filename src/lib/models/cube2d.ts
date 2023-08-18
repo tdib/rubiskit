@@ -8,13 +8,11 @@ export const COLOURS = {
     'O': '#ff8300' // Orange
 } as const
 
-
 // Define the general structure and type definitions
 type StickerColour = 'W' | 'O' | 'G' | 'R' | 'B' | 'Y' // Letters define the colours of the cube
 export type Face = StickerColour[][]
 type CubeState = [Face, Face, Face, Face, Face, Face]
 const DIMENSION = 3
-const NUM_FACES = 6
 
 // The cube state is given by the following. The structure of which is as follows:
 // U/top face: [top row] [middle row] [bottom row]
@@ -39,9 +37,8 @@ export const DIRECTIONS = {
   BACK: 4,
   DOWN: 5
 } as const
-export type Direction = typeof DIRECTIONS[keyof typeof DIRECTIONS]
 
-export class Cube {
+export class Cube2D {
     state: CubeState
 
     constructor(initial: CubeState = SOLVED_CUBE) {
@@ -49,8 +46,6 @@ export class Cube {
     }
 
     R() {
-        console.log('R')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.RIGHT])
 
@@ -70,8 +65,6 @@ export class Cube {
     }
 
     RPrime() {
-        console.log('R\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.RIGHT])
 
@@ -91,8 +84,6 @@ export class Cube {
     }
 
     U() {
-        console.log('U')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.UP])
 
@@ -112,8 +103,6 @@ export class Cube {
     }
 
     UPrime() {
-        console.log('U\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.UP])
 
@@ -133,8 +122,6 @@ export class Cube {
     }
 
     L() {
-        console.log('L')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.LEFT])
 
@@ -154,8 +141,6 @@ export class Cube {
     }
 
     LPrime() {
-        console.log('L\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.LEFT])
 
@@ -175,8 +160,6 @@ export class Cube {
     }
 
     F() {
-        console.log('F')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.FRONT])
 
@@ -196,8 +179,6 @@ export class Cube {
     }
 
     FPrime() {
-        console.log('F\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.FRONT])
 
@@ -217,8 +198,6 @@ export class Cube {
     }
 
     B() {
-        console.log('B')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.BACK])
 
@@ -238,8 +217,6 @@ export class Cube {
     }
 
     BPrime() {
-        console.log('B\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.BACK])
 
@@ -259,8 +236,6 @@ export class Cube {
     }
 
     D() {
-        console.log('D')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.DOWN])
 
@@ -280,8 +255,6 @@ export class Cube {
     }
 
     DPrime() {
-        console.log('D\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.DOWN])
 

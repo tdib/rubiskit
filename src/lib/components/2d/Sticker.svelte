@@ -1,6 +1,6 @@
 <script lang='ts'>
-  import { COLOURS } from '$lib/models/cube'
-  import type { StickerColour } from '$lib/models/cube'
+  import { COLOURS } from '$lib/models/cube2d'
+  import type { StickerColour } from '$lib/models/cube2d'
   export let sticker: StickerColour
 </script>
 
