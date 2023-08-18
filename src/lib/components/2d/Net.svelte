@@ -1,13 +1,13 @@
 <script lang='ts'>
-  import type { Cube, Direction } from '$lib/models/cube'
-	import { DIRECTIONS } from '$lib/models/cube'
+  import type { Cube2D } from '$lib/models/cube2d'
+	import { DIRECTIONS } from '$lib/models/cube2d'
   import Face from './Face.svelte'
 
-  export let cube: Cube
-
+  export let cube: Cube2D
 
   // Determine where the positioning of each face should be
   const { UP, LEFT, FRONT, RIGHT, BACK, DOWN } = DIRECTIONS
+  type Direction = typeof DIRECTIONS[keyof typeof DIRECTIONS]
   let netGridCells: (Direction | null)[][] = [
     [null, UP, null, null],
     [LEFT, FRONT, RIGHT, BACK],

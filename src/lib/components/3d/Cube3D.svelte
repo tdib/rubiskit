@@ -30,7 +30,7 @@
       r.isClockwise,
       rotationSpeed
     )
-    // $rotationState.rotationQueue[0].rotation.start()
+
     $rotationState.rotationQueue.shift()
   }
 
@@ -52,7 +52,6 @@
     )
     $moveState.moveQueue.shift()
   }
-
 </script>
 
 <div>

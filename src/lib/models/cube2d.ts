@@ -8,13 +8,11 @@ export const COLOURS = {
     'O': '#ff8300' // Orange
 } as const
 
-
 // Define the general structure and type definitions
 type StickerColour = 'W' | 'O' | 'G' | 'R' | 'B' | 'Y' // Letters define the colours of the cube
 export type Face = StickerColour[][]
 type CubeState = [Face, Face, Face, Face, Face, Face]
 const DIMENSION = 3
-const NUM_FACES = 6
 
 // The cube state is given by the following. The structure of which is as follows:
 // U/top face: [top row] [middle row] [bottom row]
@@ -39,9 +37,8 @@ export const DIRECTIONS = {
   BACK: 4,
   DOWN: 5
 } as const
-export type Direction = typeof DIRECTIONS[keyof typeof DIRECTIONS]
 
-export class Cube {
+export class Cube2D {
     state: CubeState
 
     constructor(initial: CubeState = SOLVED_CUBE) {

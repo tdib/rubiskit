@@ -1,117 +1,94 @@
 <script lang='ts'>
-  import { Cube } from '../lib/models/cube'
   import Net from '$lib/components/2d/Net.svelte'
   import Cube3D from '$lib/components/3d/Cube3D.svelte'
-  import { Cube3D as Cube3DClass } from '$lib/models/cube3d'
+  import { scramble } from '$lib/util/scramble'
+  import { cubeState } from '$lib/stores/cubeState'
 
   let is3d = true
-  let cube = new Cube()
-  let cube3d = new Cube3DClass()
+
+  scramble()
 
   function handleKeyPress(e: KeyboardEvent) {
     // Main permutations
     if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'r') {
       if (e.shiftKey) {
-        cube.RPrime()
-        cube3d.RPrime()
+        $cubeState.RPrime()
       } else {
-        cube.R()
-        cube3d.R()
+        $cubeState.R()
       }
     } else if (e.key === 'ArrowUp' || e.key.toLowerCase() === 'u') {
       if (e.shiftKey) {
-        cube.UPrime()
-        cube3d.UPrime()
+        $cubeState.UPrime()
       }
       else {
-        cube.U()
-        cube3d.U()
+        $cubeState.U()
       }
     } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'l') {
       if (e.shiftKey) {
-        cube.LPrime()
-        cube3d.LPrime()
+        $cubeState.LPrime()
       } else {
-        cube.L()
-        cube3d.L()
+        $cubeState.L()
       }
     } else if (e.key === 'ArrowDown' || e.key.toLowerCase() === 'd') {
       if (e.shiftKey) {
-        cube.DPrime()
-        cube3d.DPrime()
+        $cubeState.DPrime()
       } else {
-        cube.D()
-        cube3d.D()
+        $cubeState.D()
       }
     } else if (e.key.toLowerCase() === 'f') {
       if (e.shiftKey) {
-        cube.FPrime()
-        cube3d.FPrime()
+        $cubeState.FPrime()
       } else {
-        cube.F()
-        cube3d.F()
+        $cubeState.F()
       }
     } else if (e.key.toLowerCase() === 'b') {
       if (e.shiftKey) {
-        cube.BPrime()
-        cube3d.BPrime()
+        $cubeState.BPrime()
       } else {
-        cube.B()
-        cube3d.B()
+        $cubeState.B()
       }
     // Advanced moves
     } else if (e.key.toLowerCase() === 'm') {
       if (e.shiftKey) {
-        cube.mPrime()
-        cube3d.mPrime()
+        $cubeState.mPrime()
       } else {
-        cube.m()
-        cube3d.m()
+        $cubeState.m()
       }
     } else if (e.key.toLowerCase() === 'e') {
       if (e.shiftKey) {
-        cube.ePrime()
-        cube3d.ePrime()
+        $cubeState.ePrime()
       } else {
-        cube.e()
-        cube3d.e()
+        $cubeState.e()
       }
     } else if (e.key.toLowerCase() === 's') {
       if (e.shiftKey) {
-        cube.sPrime()
-        cube3d.sPrime()
+        $cubeState.sPrime()
       } else {
-        cube.s()
-        cube3d.s()
+        $cubeState.s()
       }
     // Rotations
     } else if (e.key.toLowerCase() === 'x') {
       if (e.shiftKey) {
-        cube.xPrime()
-        cube3d.xPrime()
+        $cubeState.xPrime()
       } else {
-        cube.x()
-        cube3d.x()
+        $cubeState.x()
       }
     } else if (e.key.toLowerCase() === 'y') {
       if (e.shiftKey) {
-        cube.yPrime()
-        cube3d.yPrime()
+        $cubeState.yPrime()
       } else {
-        cube.y()
-        cube3d.y()
+        $cubeState.y()
       }
     } else if (e.key.toLowerCase() === 'z') {
       if (e.shiftKey) {
-        cube.zPrime()
-        cube3d.zPrime()
+        $cubeState.zPrime()
       } else {
-        cube.z()
-        cube3d.z()
+        $cubeState.z()
       }
     }
 
-    cube = cube
+    $cubeState.cube2d = $cubeState.cube2d
+    console.log($cubeState.history);
   }
 </script>
 
@@ -123,7 +100,7 @@
 {#if is3d}
   <Cube3D />
 {:else}
-  <Net cube={cube} />
+  <Net cube={$cubeState.cube2d} />
 {/if}
 
 <svelte:window on:keydown={handleKeyPress}/>

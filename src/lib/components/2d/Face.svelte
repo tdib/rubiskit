@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import type { Face } from '$lib/models/cube'
+  import type { Face } from '$lib/models/cube2d'
   import Sticker from './Sticker.svelte'
   
   export let face: Face
