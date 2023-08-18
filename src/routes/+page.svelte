@@ -2,7 +2,7 @@
   import Net from '$lib/components/2d/Net.svelte'
   import Cube3D from '$lib/components/3d/Cube3D.svelte'
   import { scramble } from '$lib/util/scramble'
-  import { naiveSolve } from '$lib/util/solve'
+  import { naiveSolve, isSolved } from '$lib/util/solve'
   import { cubeState } from '$lib/stores/cubeState'
   import { Lightbulb, LightbulbOff } from 'lucide-svelte'
   import { onMount } from 'svelte'
@@ -88,6 +88,7 @@
       }
     }
     $cubeState.cube2d = $cubeState.cube2d
+    isSolved()
   }
 
   // Set initial theme based on user's preference in localstorage
@@ -106,9 +107,7 @@
   function toggleTheme() {
     // Determine what the current and switching theme is
     const currTheme = localStorage.getItem('theme');
-    console.log('current theme is', currTheme);
     const newTheme = currTheme === 'dark' ? 'light' : 'dark'
-    console.log('switching to ', newTheme);
 
     // Set theme in body class list and localstorage
     if (currTheme) {

@@ -11,14 +11,14 @@ export const COLOURS = {
 // Define the general structure and type definitions
 type StickerColour = 'W' | 'O' | 'G' | 'R' | 'B' | 'Y' // Letters define the colours of the cube
 export type Face = StickerColour[][]
-type CubeState = [Face, Face, Face, Face, Face, Face]
+export type CubeState = [Face, Face, Face, Face, Face, Face]
 const DIMENSION = 3
 
 // The cube state is given by the following. The structure of which is as follows:
 // U/top face: [top row] [middle row] [bottom row]
 // L/left face: [top row] [middle row] [bottom row]
 // ...
-const SOLVED_CUBE: CubeState = [
+export const SOLVED_CUBE: CubeState = [
     [['W', 'W', 'W'], ['W', 'W', 'W'], ['W', 'W', 'W']], // Up
     [['O', 'O', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O']], // Left
     [['G', 'G', 'G'], ['G', 'G', 'G'], ['G', 'G', 'G']], // Front
