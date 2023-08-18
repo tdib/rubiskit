@@ -15,25 +15,35 @@
   ]
 </script>
 
-<div class='net'>
-  {#each netGridCells as gridRow}
-    {#each gridRow as face}
-      {#if face !== null}
-        <Face face={cube.state[face]} />
-      {:else}
-        <div />
-      {/if}
+<div class='container'>
+  <div class='net'>
+    {#each netGridCells as gridRow}
+      {#each gridRow as face}
+        {#if face !== null}
+          <Face face={cube.state[face]} />
+        {:else}
+          <div />
+        {/if}
+      {/each}
     {/each}
-  {/each}
+  </div>
 </div>
 
 <style lang='scss'>
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
   .net {
-    margin: 10em auto;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 1em;
     width: max-content;
   }
+  
 </style>

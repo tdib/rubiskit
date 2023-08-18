@@ -2,11 +2,12 @@
   import Net from '$lib/components/2d/Net.svelte'
   import Cube3D from '$lib/components/3d/Cube3D.svelte'
   import { scramble } from '$lib/util/scramble'
+  import { naiveSolve } from '$lib/util/solve'
   import { cubeState } from '$lib/stores/cubeState'
+  import { Lightbulb, LightbulbOff } from 'lucide-svelte'
+  import { onMount } from 'svelte'
 
   let is3d = true
-
-  scramble()
 
   function handleKeyPress(e: KeyboardEvent) {
     // Main permutations
@@ -86,16 +87,66 @@
         $cubeState.z()
       }
     }
-
     $cubeState.cube2d = $cubeState.cube2d
-    console.log($cubeState.history);
   }
+
+  // Set initial theme based on user's preference in localstorage
+  let theme: string | null = null
+  onMount(() => {
+    theme = localStorage.getItem('theme')
+    if (!theme) {
+      let darkScheme = window.matchMedia('(prefers-color-scheme: dark)')
+      theme = darkScheme.matches ? 'dark' : 'light'
+      localStorage.setItem('theme', theme)
+    }
+    document.body.classList.add(theme)
+  })
+
+  // When the user toggles the theme, set in localstorage
+  function toggleTheme() {
+    // Determine what the current and switching theme is
+    const currTheme = localStorage.getItem('theme');
+    console.log('current theme is', currTheme);
+    const newTheme = currTheme === 'dark' ? 'light' : 'dark'
+    console.log('switching to ', newTheme);
+
+    // Set theme in body class list and localstorage
+    if (currTheme) {
+      document.body.classList.remove(currTheme)
+    }
+
+    document.body.classList.toggle(newTheme);
+    localStorage.setItem('theme', newTheme)
+    theme = localStorage.getItem('theme')
+  }
+
 </script>
 
-<!-- <div>
+<div class='header'>
   <h1>Rubiskit</h1>
   <h2>(pronounced roo-biscuit, emphasis on the biscuit)</h2>
-</div> -->
+</div>
+
+<button class='buttons top-right' on:click={toggleTheme}>
+  {#if theme === 'dark'}
+    <Lightbulb size={45} />
+  {:else}
+    <LightbulbOff size={45} />
+  {/if}
+</button>
+
+<div class='buttons bottom-right'>
+  <button on:click={() => scramble(20)}>Scramble!</button>
+  <button on:click={() => {
+    naiveSolve()
+    $cubeState.cube2d = $cubeState.cube2d
+  }}>Naive Solve</button>
+  {#if is3d}
+    <button on:click={() => is3d = false}>2D Version</button>
+  {:else}
+    <button on:click={() => is3d = true}>3D Version</button>
+  {/if}
+</div>
 
 {#if is3d}
   <Cube3D />
@@ -103,18 +154,52 @@
   <Net cube={$cubeState.cube2d} />
 {/if}
 
-<svelte:window on:keydown={handleKeyPress}/>
+<svelte:window on:keydown={handleKeyPress} />
 
 <style lang='scss'>
   h1, h2 {
     margin: 0;
   }
 
-  div {
+  .header {
+    position: absolute;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-block-start: 3em;
+    color: var(--text);
+  }
+
+  .top-right {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    background: none;
+    border: none;
+    color: var(--text);
+  }
+
+  .bottom-right {
+    position: absolute;
+    width: fit-content;
+    bottom: 2em;
+    right: 2em;
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+  }
+
+  button {
+    width: fit-content;
+    color: var(--surface-text);
+    background-color: var(--surface);
+    border: none;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+    font-size: 1.25em;
+    font-weight: bold;
+    cursor: pointer;
   }
 
 </style>

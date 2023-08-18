@@ -36,18 +36,6 @@ export function scramble(numMoves: number = 20) {
         return state.moveFromAxis(randomAxis, isClockwise)
       })
     }
-
-    // // update historystate to add random move
-    // historyState.update((state) => {
-    //   return [
-    //     ...state,
-    //     {
-    //       axis: randomAxis,
-    //       isClockwise
-    //     }
-    //   ]
-    // })
-
   }
 
 }

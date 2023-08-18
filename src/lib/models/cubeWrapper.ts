@@ -13,6 +13,15 @@ export class CubeWrapper {
     this.history = []
   }
 
+  /**
+   * Call the move function associated with the given axis. For example, if (0, 1, 0) is passed in
+   * as the axis, then the U() function is called. This is useful for translating 3D vector axes
+   * into 2D moves.
+   * 
+   * @param axis A vector representing the axis to move from
+   * @param isClockwise A boolean determining whether or not the turn is clockwise (i.e. regular or a prime move)
+   * @returns The CubeWrapper instance, having executed the move
+   */
   moveFromAxis(axis: Vector3, isClockwise: boolean = true) {
     let {x, y, z} = axis
 
@@ -35,6 +44,28 @@ export class CubeWrapper {
     }
 
     return this
+  }
+
+  /**
+   * Return the inversion of a move, given a move function. For example, if the
+   * R() function is passed in, then the RPrime() function is returned.
+   * 
+   * @param move The move function to invert
+   * @returns The inverted move function
+   */
+  invertMove(move: Function) {
+    let invertedMap = new WeakMap()
+    const methods = ['R', 'U', 'L', 'F', 'B', 'D', 'x', 'y', 'z', 'm', 'e', 's'];
+
+    methods.forEach((method) => {
+      const original = (this as any)[method]
+      const inverted = (this as any)[`${method}Prime`]
+
+      invertedMap.set(original, inverted.bind(this))
+      invertedMap.set(inverted, original.bind(this))
+    })
+
+    return invertedMap.get(move)
   }
 
   R() {

@@ -46,8 +46,6 @@ export class Cube2D {
     }
 
     R() {
-        console.log('R')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.RIGHT])
 
@@ -67,8 +65,6 @@ export class Cube2D {
     }
 
     RPrime() {
-        console.log('R\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.RIGHT])
 
@@ -88,8 +84,6 @@ export class Cube2D {
     }
 
     U() {
-        console.log('U')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.UP])
 
@@ -109,8 +103,6 @@ export class Cube2D {
     }
 
     UPrime() {
-        console.log('U\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.UP])
 
@@ -130,8 +122,6 @@ export class Cube2D {
     }
 
     L() {
-        console.log('L')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.LEFT])
 
@@ -151,8 +141,6 @@ export class Cube2D {
     }
 
     LPrime() {
-        console.log('L\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.LEFT])
 
@@ -172,8 +160,6 @@ export class Cube2D {
     }
 
     F() {
-        console.log('F')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.FRONT])
 
@@ -193,8 +179,6 @@ export class Cube2D {
     }
 
     FPrime() {
-        console.log('F\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.FRONT])
 
@@ -214,8 +198,6 @@ export class Cube2D {
     }
 
     B() {
-        console.log('B')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.BACK])
 
@@ -235,8 +217,6 @@ export class Cube2D {
     }
 
     BPrime() {
-        console.log('B\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.BACK])
 
@@ -256,8 +236,6 @@ export class Cube2D {
     }
 
     D() {
-        console.log('D')
-
         // The right face is rotated 90 degrees (clockwise)
         rotateClockwise(this.state[DIRECTIONS.DOWN])
 
@@ -277,8 +255,6 @@ export class Cube2D {
     }
 
     DPrime() {
-        console.log('D\'')
-
         // The right face is rotated 90 degrees (counter-clockwise)
         rotateCounterClockwise(this.state[DIRECTIONS.DOWN])
 
