@@ -1,6 +1,6 @@
 <script lang='ts'>
   import { Canvas, T } from '@threlte/core'
-  import { OrbitControls } from '@threlte/extras'
+  import { OrbitControls, Float } from '@threlte/extras'
   import { Euler } from 'three'
   import Cubie from './Cubie.svelte'
   import { cube3dState, moveState, cameraState, rotationState } from '$lib/stores/cube3dState'
@@ -83,7 +83,6 @@
         colour6={cubie.colour.back}
       />
     {/each}
-
 
   </Canvas>
 </div>
