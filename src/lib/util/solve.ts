@@ -35,15 +35,16 @@ export function isSolved() {
 
   if (currState === null) return false
 
-  // Iterate each face, row, and sticker of the current state and check if it matches the solved cube
-  for (const [faceIdx, face] of currState.entries()) {
-      for (const [rowIdx, row] of face.entries()) {
-          for (const [stickerIdx, sticker] of row.entries()) {
-              if (sticker !== SOLVED_CUBE[faceIdx][rowIdx][stickerIdx]) {
-                return false
-              }
-          }
+  // Iterate each face and check if every sticker is the same
+  for (const face of currState) {
+    let faceColour = face[1][1]
+    for (const row of face) {
+      for (const sticker of row) {
+        if (sticker !== faceColour) {
+          return false
+        }
       }
+    }
   }
 
   console.log('The cube has been solved!');
