@@ -1,38 +1,57 @@
-# create-svelte
+# rubiskit
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Pronounced roo-biscuit, emphasis on the biscuit
 
-## Creating a project
+## What is it?
 
-If you're seeing this, you've probably already done this step. Congrats!
+At the moment, Rubiskit is simply a 2D/3D Rubik's cube simluator. In future, I plan to expand it to incorporate speedsolving tools to help learn algorithms.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Controls
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+If you are familiar with Rubik's cube notation, most of the moves can be done using (almost) regular notation. Even if you are not, brief explanations are provided in the tables below.
 
-## Developing
+Note: Advanced moves such as `S`, `E`, and `M` will appear very strange due to the current implementation. I intend to fix this in a future release.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Note: Wide moves are currently not implemented.
 
-```bash
-npm run dev
+By default, a move or rotation will be clockwise, and you must hold shift + the relevant keybinding to reverse the direction.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+### Regular moves
+| Key    | Move                |
+| ------ | --------------------|
+| r      | R (right face)      |
+| u      | U (upper face)      |
+| l      | L (left face)       |
+| f      | F (front face)      |
+| d      | D (down face)       |
+| b      | B (back face)       |
 
-## Building
+Some common moves are also available using the arrow keys. Similar to above, holding shift while pressing one of these keys will execute an anti-clockwise rotation.
+| Key          | Move                |
+| ------------ | ------------------- |
+| Right arrow  | R (right face)      |
+| Up arrow     | U (upper face)      |
+| Left arrow   | L (left face)       |
+| Down arrow   | D (down face)       |
 
-To create a production version of your app:
 
-```bash
-npm run build
-```
+### Advanced moves
+| Key    | Move                |
+| ------ | --------------------|
+| s      | S (standing slice)  |
+| e      | E (equator slice)   |
+| m      | M (middle slice)    |
 
-You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+### Rotations
+| Key    | Rotation                                  |
+| ------ | ----------------------------------------- |
+| x      | x (rotate clockwise around right face)    |
+| y      | y (rotate clockwise around up face)       |
+| z      | z (rotate clockwise around front face)    |
+
+
+### Wide moves
+Unimplemented.
+
+
