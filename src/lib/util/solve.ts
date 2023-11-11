@@ -1,5 +1,4 @@
 import { cubeState } from '$lib/stores/cubeState'
-import { SOLVED_CUBE } from '$lib/models/cube2d'
 import type { CubeState } from '$lib/models/cube2d'
 
 /**

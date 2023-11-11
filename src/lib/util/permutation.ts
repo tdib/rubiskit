@@ -21,7 +21,7 @@ function isCubieOnTargetFace(cubie: Cubie, rotationAxis: Vector3): boolean {
   return false
 }
 
-export function turn(rotationAxis: Vector3, isClockwise: boolean = true, turnDuration: number = 0.15) {
+export function turnFace(rotationAxis: Vector3, isClockwise: boolean = true, turnDuration: number = 0.15) {
   const ROTATION_DIRECTION_AMOUNT = isClockwise ? -Math.PI/2 : Math.PI/2
 
   // Reactively extract cubies from the store

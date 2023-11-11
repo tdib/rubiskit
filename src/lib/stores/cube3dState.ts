@@ -3,13 +3,13 @@ import { Vector3, Quaternion } from 'three'
 import { WHITE, GREEN, BLUE, RED, ORANGE, YELLOW, type Cubie } from '$lib/models/cube3d'
 
 interface Camera {
-  position: Vector3
-  up: Vector3
+  position: Vector3,
+  rotation: Vector3,
 }
 
 export const cameraState = writable<Camera>({
   position: new Vector3(6, 6, 6),
-  up: new Vector3(0, 1, 0)
+  rotation: new Vector3(0, 0, 0),
 })
 
 export const moveState = writable<{

@@ -1,55 +1,72 @@
 <script lang='ts'>
   import { Canvas, T } from '@threlte/core'
-  import { OrbitControls, Float } from '@threlte/extras'
-  import { Euler } from 'three'
+  import { Euler, PerspectiveCamera } from 'three'
   import Cubie from './Cubie.svelte'
   import { cube3dState, moveState, cameraState, rotationState } from '$lib/stores/cube3dState'
-  import { turn } from '$lib/util/permutation'
-  import { rotate } from '$lib/util/rotation'
+  import { turnFace } from '$lib/util/permutation'
+  import { rotateCamera } from '$lib/util/rotation'
 
-  let cameraPosition = $cameraState.position
+  // Sync the camera position and up vector with the store
   $: cameraPosition = $cameraState.position
+  $: cameraRotation = $cameraState.rotation
 
-  let upVector = $cameraState.up
-  $: upVector = $cameraState.up
+  // Ensure the cube begins in the middle of the screen
+  let camera: PerspectiveCamera
+  function onCameraCreated({ ref }: { ref: PerspectiveCamera }) {
+    camera = ref
+    camera.lookAt(0, 0, 0)
+  }
 
+  // Handle rotations (x, y, and z)
   const defaultRotationSpeed = 0.2
   let rotationSpeed = defaultRotationSpeed
   $: if (!$rotationState.isRotating && $rotationState.rotationQueue.length > 0) {
+    // Put a "lock" on the rotations so they don't interfere with each other
     $rotationState.isRotating = true
 
+    // Adjust the speed of the rotations based on the length of the queue
+    // More in the queue will make rotations faster
     if ($rotationState.rotationQueue.length > 1) {
       rotationSpeed = defaultRotationSpeed/(1 + $rotationState.rotationQueue.length*defaultRotationSpeed)
     } else {
       rotationSpeed = defaultRotationSpeed
     }
 
+    // Rotate the camera around the cube to give the perspective of the cube rotating
     let r = $rotationState.rotationQueue[0]
-    rotate(
+    rotateCamera(
       r.axis,
       r.isClockwise,
       rotationSpeed
     )
 
+    // Remove this rotation from the queue
     $rotationState.rotationQueue.shift()
   }
 
+  // Handle moves (R, L, U, D, F, B)
   const defaultTurnSpeed = 0.15
   let turnSpeed = defaultTurnSpeed
   $: if (!$moveState.isMoving && $moveState.moveQueue.length > 0) {
+    // Put a "lock" on the moves so they don't interfere with each other
     $moveState.isMoving = true
 
+    // Adjust the speed of the moves based on the length of the queue
+    // More in the queue will make moves faster
     if ($moveState.moveQueue.length > 1) {
       turnSpeed = defaultTurnSpeed/(1 + $moveState.moveQueue.length*defaultTurnSpeed)
     } else {
       turnSpeed = defaultTurnSpeed
     }
 
-    turn(
+    // Actually perform the permutation on the face required
+    turnFace(
       $moveState.moveQueue[0].move,
       $moveState.moveQueue[0].isClockwise,
       turnSpeed
     )
+
+    // Remove this move from the queue
     $moveState.moveQueue.shift()
   }
 </script>
@@ -59,15 +76,9 @@
     <T.PerspectiveCamera
       makeDefault
       position={[cameraPosition.x, cameraPosition.y, cameraPosition.z]}
-      up={[upVector.x, upVector.y, upVector.z]}
-    >
-      <OrbitControls
-        enableDamping
-        enableRotate={false}
-        enableZoom={false}
-        enablePan={false}
-      />
-    </T.PerspectiveCamera>
+      rotation={[cameraRotation.x, cameraRotation.y, cameraRotation.z]}
+      on:create={onCameraCreated}
+    />
 
     <T.AmbientLight intensity={0.8} />
 
