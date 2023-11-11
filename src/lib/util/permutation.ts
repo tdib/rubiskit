@@ -1,26 +1,16 @@
 import type { Cubie } from '$lib/models/cube3d'
-import type { Vector3 } from 'three'
-import { Quaternion } from 'three'
+import { Quaternion, Vector3 } from 'three'
 import * as Utils from 'three/src/math/MathUtils'
 import { cube3dState, moveState } from '$lib/stores/cube3dState'
+import { roundVectorComponents, isCubieOnTargetFace, hasOneZero, flipVector } from './util'
 
-// Function for rounding a vector to the nearest integer - used to account for precision error
-export function roundVectorComponents(vector: Vector3): Vector3 {
-  vector.x = Math.round(vector.x)
-  vector.y = Math.round(vector.y)
-  vector.z = Math.round(vector.z)
-
-  return vector
-}
-
-// This function checks if the cubie's position aligns with the provided rotation axis
-function isCubieOnTargetFace(cubie: Cubie, rotationAxis: Vector3): boolean {
-  if (rotationAxis.x) return cubie.position.x === rotationAxis.x
-  if (rotationAxis.y) return cubie.position.y === rotationAxis.y
-  if (rotationAxis.z) return cubie.position.z === rotationAxis.z
-  return false
-}
-
+/**
+ * Turn the specified face of the cube by 90 degrees.
+ * 
+ * @param rotationAxis The axis to rotate around
+ * @param isClockwise Boolean indicating whether the rotation is clockwise or anti-clockwise
+ * @param turnDuration The number of seconds the turn animation should take
+ */
 export function turnFace(rotationAxis: Vector3, isClockwise: boolean = true, turnDuration: number = 0.15) {
   const ROTATION_DIRECTION_AMOUNT = isClockwise ? -Math.PI/2 : Math.PI/2
 
@@ -34,6 +24,12 @@ export function turnFace(rotationAxis: Vector3, isClockwise: boolean = true, tur
   let targetFace = cubies
       .map((cubie, idx) => ({ cubie, originalIdx: idx }))
       .filter(({ cubie }) => isCubieOnTargetFace(cubie, rotationAxis))
+    
+  // If the rotation axis is for a slice move (i.e. the axis is indicated by a 0 instead of a 1)
+  // then flip it to be a regular axis, e.g. (1, 1, 0) -> (0, 0, 1)
+  if (hasOneZero(rotationAxis)) {
+    rotationAxis = flipVector(rotationAxis)
+  }
 
   // Store initial position and rotation for all cubies on the target face
   const initialRotations = targetFace.map(({ cubie }) => cubie.rotation.clone())

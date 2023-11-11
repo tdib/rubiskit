@@ -32,6 +32,12 @@ export const DIRECTIONS = {
   DOWN: new Vector3(0, -1, 0),
 }
 
+const ADVANCED_MOVES = {
+  SLICE: new Vector3(1, 1, 0),
+  EQUATOR: new Vector3(1, 0, 1),
+  MIDDLE: new Vector3(0, 1, 1),
+}
+
 export function queueMove(move: Vector3, isClockwise: boolean = true) {
   moveState.update((state) => {
     state.moveQueue.push({ move, isClockwise })
@@ -193,38 +199,26 @@ export class Cube3D {
   
   // Advanced moves
   m() {
-    this.R()
-    this.LPrime()
-    this.xPrime()
+    queueMove(ADVANCED_MOVES.MIDDLE, false)
   }
   
   mPrime() {
-    this.RPrime()
-    this.L()
-    this.x()
+    queueMove(ADVANCED_MOVES.MIDDLE)
   }
   
   e() {
-    this.U()
-    this.DPrime()
-    this.yPrime()
+    queueMove(ADVANCED_MOVES.EQUATOR, false)
   }
   
   ePrime() {
-    this.UPrime()
-    this.D()
-    this.y()
+    queueMove(ADVANCED_MOVES.EQUATOR)
   }
   
   s() {
-    this.FPrime()
-    this.B()
-    this.z()
+    queueMove(ADVANCED_MOVES.SLICE)
   }
   
   sPrime() {
-    this.F()
-    this.BPrime()
-    this.zPrime()
+    queueMove(ADVANCED_MOVES.SLICE, false)
   }
 }
