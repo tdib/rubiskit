@@ -394,7 +394,7 @@ export class Cube2D {
     return this
   }
   
-  // Advanced moves
+  // Slice moves
   m() {
     this.R()
     this.LPrime()

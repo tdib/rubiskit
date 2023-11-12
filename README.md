@@ -33,7 +33,7 @@ Some common moves are also available using the arrow keys. Similar to above, hol
 | Down arrow   | D (down face)       |
 
 
-### Advanced moves
+### Slice moves
 | Key    | Move                |
 | ------ | --------------------|
 | s      | S (standing slice)  |
@@ -52,4 +52,6 @@ Some common moves are also available using the arrow keys. Similar to above, hol
 ### Wide moves
 Wide moves are implemented for all regular moves as listed in the table above. To activate a wide move, hold space while pressing the desired key. Using shift will still work as usual, performing an anti-clockwise move.
 
+Also ensure that you do not have any buttons on the page selected, as pressing space will activate said button.
 
+Note: The animations for wide moves are still not 100%.

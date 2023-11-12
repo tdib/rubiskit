@@ -32,10 +32,21 @@ export const DIRECTIONS = {
   DOWN: new Vector3(0, -1, 0),
 }
 
-const ADVANCED_MOVES = {
-  SLICE: new Vector3(1, 1, 0),
-  EQUATOR: new Vector3(1, 0, 1),
-  MIDDLE: new Vector3(0, 1, 1),
+// Define the slice moves so we don't need to use the strings everywhere
+export enum SliceMove {
+  STANDING = 'STANDING',
+  EQUATOR = 'EQUATOR',
+  MIDDLE = 'MIDDLE',
+}
+
+// Define the axis of rotation for each slice move.
+// The axis is defined as a vector with one 0 component, where the 0 defines the axis.
+// These are defined relative to the front face, e.g. (1, 1, 0) means the axis is the z-axis
+// of the cube as you see it, not the z-axis of the world.
+export const SLICE_MOVES: Record<SliceMove, Vector3> = {
+  [SliceMove.STANDING]: new Vector3(1, 1, 0),
+  [SliceMove.EQUATOR]: new Vector3(1, 0, 1),
+  [SliceMove.MIDDLE]: new Vector3(0, 1, 1),
 }
 
 export function queueMove(move: Vector3, isClockwise: boolean = true) {
@@ -197,29 +208,29 @@ export class Cube3D {
     DIRECTIONS.RIGHT = d
   }
   
-  // Advanced moves
+  // Slice moves
   m() {
-    queueMove(ADVANCED_MOVES.MIDDLE, false)
+    queueMove(SLICE_MOVES.MIDDLE)
   }
   
   mPrime() {
-    queueMove(ADVANCED_MOVES.MIDDLE)
+    queueMove(SLICE_MOVES.MIDDLE, false)
   }
   
   e() {
-    queueMove(ADVANCED_MOVES.EQUATOR, false)
+    queueMove(SLICE_MOVES.EQUATOR)
   }
   
   ePrime() {
-    queueMove(ADVANCED_MOVES.EQUATOR)
+    queueMove(SLICE_MOVES.EQUATOR, false)
   }
   
   s() {
-    queueMove(ADVANCED_MOVES.SLICE)
+    queueMove(SLICE_MOVES.STANDING)
   }
   
   sPrime() {
-    queueMove(ADVANCED_MOVES.SLICE, false)
+    queueMove(SLICE_MOVES.STANDING, false)
   }
 
   // Wide moves

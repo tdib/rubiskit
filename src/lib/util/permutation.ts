@@ -2,7 +2,7 @@ import type { Cubie } from '$lib/models/cube3d'
 import { Quaternion, Vector3 } from 'three'
 import * as Utils from 'three/src/math/MathUtils'
 import { cube3dState, moveState } from '$lib/stores/cube3dState'
-import { roundVectorComponents, isCubieOnTargetFace, hasOneZero, flipVector } from './util'
+import { roundVectorComponents, isCubieOnTargetFace, hasOneZero, mapAbsoluteToRelative } from './util'
 
 /**
  * Turn the specified face of the cube by 90 degrees.
@@ -22,13 +22,14 @@ export function turnFace(rotationAxis: Vector3, isClockwise: boolean = true, tur
 
   // Extract cubies that should be targeted by this rotation
   let targetFace = cubies
-      .map((cubie, idx) => ({ cubie, originalIdx: idx }))
-      .filter(({ cubie }) => isCubieOnTargetFace(cubie, rotationAxis))
-    
+    .map((cubie, idx) => ({ cubie, originalIdx: idx }))
+    .filter(({ cubie }) => isCubieOnTargetFace(cubie, rotationAxis))
+  
   // If the rotation axis is for a slice move (i.e. the axis is indicated by a 0 instead of a 1)
-  // then flip it to be a regular axis, e.g. (1, 1, 0) -> (0, 0, 1)
+  // then map it to a relative axis depending on the current rotation state of the cube. This includes
+  // flipping the numbers in the axis as per the standard axis encoding, e.g. (1, 1, 0) -> (0, 0, 1)
   if (hasOneZero(rotationAxis)) {
-    rotationAxis = flipVector(rotationAxis)
+    rotationAxis = mapAbsoluteToRelative(rotationAxis)
   }
 
   // Store initial position and rotation for all cubies on the target face

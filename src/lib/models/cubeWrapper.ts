@@ -177,7 +177,7 @@ export class CubeWrapper {
     this.history.push(this.zPrime)
   }
   
-  // Advanced moves
+  // Slice moves
   m() {
     this.cube2d.m()
     this.cube3d.m()

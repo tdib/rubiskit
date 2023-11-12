@@ -1,5 +1,6 @@
 import { Vector3 } from 'three'
 import type { Cubie } from '$lib/models/cube3d'
+import { SLICE_MOVES, DIRECTIONS, SliceMove } from '$lib/models/cube3d'
 
 /**
  * Round the x, y, and z components of a vector to the nearest integers. Used to account
@@ -31,14 +32,14 @@ export function roundVectorComponents(vector: Vector3): Vector3 {
 export function isCubieOnTargetFace(cubie: Cubie, rotationAxis: Vector3): boolean {
   // If the rotation axis only has one zero, it indicates a slice move - handle accordingly
   if (hasOneZero(rotationAxis)) {
-    // Determine which face the slice move is on
-    if (rotationAxis.x === 0) {
-      return cubie.position.x === 0
-    } else if (rotationAxis.y === 0) {
-      return cubie.position.y === 0
-    } else if (rotationAxis.z === 0) {
-      return cubie.position.z === 0
-    }
+    // If we are dealing with a slice move, we have to map it to a regular
+    // encoding, considering the relative rotation of the cubie (i.e. not just world space)
+    rotationAxis = flipVector(mapAbsoluteToRelative(rotationAxis))
+
+    // Determine which axis the slice move is on, and check if the current cubie is on this axis
+    if (rotationAxis.x === 0) return cubie.position.x === 0
+    if (rotationAxis.y === 0) return cubie.position.y === 0
+    if (rotationAxis.z === 0) return cubie.position.z === 0
   }
 
   // A regular move is being performed - check if the cubie is on the target face
@@ -78,4 +79,40 @@ export function flipVector(vector: Vector3): Vector3 {
     1: 0,
   }
   return new Vector3(flip[vector.x], flip[vector.y], flip[vector.z])
+}
+
+/**
+ * Convert a vector to a string for comparison purposes.
+ * 
+ * @param vector The vector to convert
+ * @returns A string representation of the vector in the format 'x,y,z'
+ */
+function vecToString(vector: Vector3): string {
+  return [vector.x, vector.y, vector.z].toString()
+}
+
+/**
+ * Map an absolute vector axis to a relative vector. This is used to convert
+ * slice moves to regular moves. For example, an absolute slice move on the z-axis is
+ * represented as (1, 1, 0), and is converted to the axis corresponding to the front
+ * of the cube, depending on how it is rotated.
+ * 
+ * 
+ * @param vector An absolute vector in the slice encoding, formatted as (1, 1, 0),
+ * where 0 is the axis of rotation.
+ * @returns A relative vector, representing the axis of rotation for the slice move.
+ */
+export function mapAbsoluteToRelative(vector: Vector3): Vector3 {
+  const v = [vector.x, vector.y, vector.z]
+
+  // Slice moves are always on the axis of the front face
+  if (v.toString() === vecToString(SLICE_MOVES[SliceMove.STANDING])) return DIRECTIONS.FRONT
+
+  // Middle moves are always on the axis of the left face
+  if (v.toString() === vecToString(SLICE_MOVES[SliceMove.MIDDLE])) return DIRECTIONS.LEFT
+
+  // Equator moves are always on the axis of the down face
+  if (v.toString() === vecToString(SLICE_MOVES[SliceMove.EQUATOR])) return DIRECTIONS.DOWN
+
+  return vector
 }

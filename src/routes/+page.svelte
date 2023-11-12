@@ -48,7 +48,7 @@
       } else {
         isShiftPressed ? $cubeState.BPrime() : $cubeState.B()
       }
-    // Advanced moves
+    // Slice moves
     } else if (e.key.toLowerCase() === 'm') {
       if (isShiftPressed) {
         $cubeState.mPrime()
