@@ -10,78 +10,78 @@
   let is3d = true
 
   function handleKeyPress(e: KeyboardEvent) {
+    const isShiftPressed = e.shiftKey
     // Main permutations
     if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'r') {
-      if (e.shiftKey) {
-        $cubeState.RPrime()
+      if (isSpacePressed) {
+        isShiftPressed ? $cubeState.wideRPrime() : $cubeState.wideR()
       } else {
-        $cubeState.R()
+        isShiftPressed ? $cubeState.RPrime() : $cubeState.R()
       }
     } else if (e.key === 'ArrowUp' || e.key.toLowerCase() === 'u') {
-      if (e.shiftKey) {
-        $cubeState.UPrime()
-      }
-      else {
-        $cubeState.U()
+      if (isSpacePressed) {
+        isShiftPressed ? $cubeState.wideUPrime() : $cubeState.wideU()
+      } else {
+        isShiftPressed ? $cubeState.UPrime() : $cubeState.U()
       }
     } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'l') {
-      if (e.shiftKey) {
-        $cubeState.LPrime()
+      if (isSpacePressed) {
+        isShiftPressed ? $cubeState.wideLPrime() : $cubeState.wideL()
       } else {
-        $cubeState.L()
+        isShiftPressed ? $cubeState.LPrime() : $cubeState.L()
       }
     } else if (e.key === 'ArrowDown' || e.key.toLowerCase() === 'd') {
-      if (e.shiftKey) {
-        $cubeState.DPrime()
+      if (isSpacePressed) {
+        isShiftPressed ? $cubeState.wideDPrime() : $cubeState.wideD()
       } else {
-        $cubeState.D()
+        isShiftPressed ? $cubeState.DPrime() : $cubeState.D()
       }
     } else if (e.key.toLowerCase() === 'f') {
-      if (e.shiftKey) {
-        $cubeState.FPrime()
+      if (isSpacePressed) {
+        isShiftPressed ? $cubeState.wideFPrime() : $cubeState.wideF()
       } else {
-        $cubeState.F()
+        isShiftPressed ? $cubeState.FPrime() : $cubeState.F()
       }
     } else if (e.key.toLowerCase() === 'b') {
-      if (e.shiftKey) {
-        $cubeState.BPrime()
+      if (isSpacePressed) {
+        isShiftPressed ? $cubeState.wideBPrime() : $cubeState.wideB()
       } else {
-        $cubeState.B()
+        isShiftPressed ? $cubeState.BPrime() : $cubeState.B()
       }
     // Advanced moves
     } else if (e.key.toLowerCase() === 'm') {
-      if (e.shiftKey) {
+      if (isShiftPressed) {
         $cubeState.mPrime()
       } else {
         $cubeState.m()
       }
     } else if (e.key.toLowerCase() === 'e') {
-      if (e.shiftKey) {
+      if (isShiftPressed) {
         $cubeState.ePrime()
       } else {
         $cubeState.e()
       }
     } else if (e.key.toLowerCase() === 's') {
-      if (e.shiftKey) {
+      if (isShiftPressed) {
         $cubeState.sPrime()
       } else {
         $cubeState.s()
       }
     // Rotations
     } else if (e.key.toLowerCase() === 'x') {
-      if (e.shiftKey) {
+      if (isShiftPressed) {
         $cubeState.xPrime()
       } else {
         $cubeState.x()
       }
     } else if (e.key.toLowerCase() === 'y') {
-      if (e.shiftKey) {
+      if (isShiftPressed) {
         $cubeState.yPrime()
       } else {
         $cubeState.y()
       }
     } else if (e.key.toLowerCase() === 'z') {
-      if (e.shiftKey) {
+      if (isShiftPressed) {
         $cubeState.zPrime()
       } else {
         $cubeState.z()
@@ -91,6 +91,7 @@
     isSolved()
   }
 
+  let isSpacePressed = false
   // Set initial theme based on user's preference in localstorage
   let theme: string | null = null
   onMount(() => {
@@ -101,6 +102,17 @@
       localStorage.setItem('theme', theme)
     }
     document.body.classList.add(theme)
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        isSpacePressed = true
+      }
+    })
+    document.addEventListener('keyup', (e) => {
+      if (e.code === 'Space') {
+        isSpacePressed = false
+      }
+    })
   })
 
   // When the user toggles the theme, set in localstorage

@@ -213,4 +213,77 @@ export class CubeWrapper {
     this.cube3d.sPrime()
     this.history.push(this.sPrime)
   }
+
+  // Wide moves
+  wideR() {
+    this.cube2d.wideR()
+    this.cube3d.wideR()
+    this.history.push(this.wideR)
+  }
+  
+  wideRPrime() {
+    this.cube2d.wideRPrime();
+    this.cube3d.wideRPrime();
+    this.history.push(this.wideRPrime);
+  }
+  
+  wideU() {
+    this.cube2d.wideU();
+    this.cube3d.wideU();
+    this.history.push(this.wideU);
+  }
+  
+  wideUPrime() {
+    this.cube2d.wideUPrime();
+    this.cube3d.wideUPrime();
+    this.history.push(this.wideUPrime);
+  }
+  
+  wideL() {
+    this.cube2d.wideL();
+    this.cube3d.wideL();
+    this.history.push(this.wideL);
+  }
+  
+  wideLPrime() {
+    this.cube2d.wideLPrime();
+    this.cube3d.wideLPrime();
+    this.history.push(this.wideLPrime);
+  }
+  
+  wideF() {
+    this.cube2d.wideF();
+    this.cube3d.wideF();
+    this.history.push(this.wideF);
+  }
+  
+  wideFPrime() {
+    this.cube2d.wideFPrime();
+    this.cube3d.wideFPrime();
+    this.history.push(this.wideFPrime);
+  }
+  
+  wideB() {
+    this.cube2d.wideB();
+    this.cube3d.wideB();
+    this.history.push(this.wideB);
+  }
+  
+  wideBPrime() {
+    this.cube2d.wideBPrime();
+    this.cube3d.wideBPrime();
+    this.history.push(this.wideBPrime);
+  }
+  
+  wideD() {
+    this.cube2d.wideD();
+    this.cube3d.wideD();
+    this.history.push(this.wideD);
+  }
+  
+  wideDPrime() {
+    this.cube2d.wideDPrime();
+    this.cube3d.wideDPrime();
+    this.history.push(this.wideDPrime);
+  }
 }

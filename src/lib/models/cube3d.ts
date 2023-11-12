@@ -221,4 +221,66 @@ export class Cube3D {
   sPrime() {
     queueMove(ADVANCED_MOVES.SLICE, false)
   }
+
+  // Wide moves
+  wideR() {
+    this.R()
+    this.mPrime()
+  }
+  
+  wideRPrime() {
+    this.RPrime()
+    this.m()
+  }
+  
+  wideU() {
+    this.U()
+    this.ePrime()
+  }
+  
+  wideUPrime() {
+    this.UPrime()
+    this.e()
+  }
+  
+  wideL() {
+    this.L()
+    this.m()
+  }
+  
+  wideLPrime() {
+    this.LPrime()
+    this.mPrime()
+  }
+  
+  wideF() {
+    this.F()
+    this.s()
+  }
+  
+  wideFPrime() {
+    this.FPrime()
+    this.sPrime()
+  }
+  
+  wideB() {
+    this.B()
+    this.sPrime()
+  }
+  
+  wideBPrime() {
+    this.BPrime()
+    this.s()
+  }
+  
+  wideD() {
+    this.D()
+    this.e()
+  }
+  
+  wideDPrime() {
+    this.DPrime()
+    this.ePrime()
+  }
+
 }
