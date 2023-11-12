@@ -10,11 +10,9 @@ At the moment, Rubiskit is simply a 2D/3D Rubik's cube simluator. In future, I p
 
 If you are familiar with Rubik's cube notation, most of the moves can be done using (almost) regular notation. Even if you are not, brief explanations are provided in the tables below.
 
-Note: Advanced moves such as `S`, `E`, and `M` will appear very strange due to the current implementation. I intend to fix this in a future release.
-
-Note: Wide moves are currently not implemented.
-
 By default, a move or rotation will be clockwise, and you must hold shift + the relevant keybinding to reverse the direction.
+
+To perform a wide move, hold space while pressing the desired key. Note that the animations for wide moves are still not 100%. Also ensure that you do not have any buttons on the page selected, as pressing space will activate said button.
 
 ### Regular moves
 | Key    | Move                |
@@ -52,6 +50,6 @@ Some common moves are also available using the arrow keys. Similar to above, hol
 
 
 ### Wide moves
-Unimplemented.
+Wide moves are implemented for all regular moves as listed in the table above. To activate a wide move, hold space while pressing the desired key. Using shift will still work as usual, performing an anti-clockwise move.
 
 
